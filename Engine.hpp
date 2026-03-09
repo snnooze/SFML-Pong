@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "States.hpp"
 
 using namespace sf;
 
@@ -13,6 +14,7 @@ class Engine
         const String m_GameName = "#Pong";
         Clock m_clock;
         Time m_dt;
+        States m_GameState;
     public : 
         Engine();
         void loop();
