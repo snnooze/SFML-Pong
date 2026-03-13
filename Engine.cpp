@@ -2,8 +2,13 @@
 
 Engine::Engine()
 {
+    //chargement de police de texte
+    if(!this->m_font.openFromFile("Assets/Fonts/kenvector_future_thin.ttf"))
+    {
+        return;
+    }
     //TODO : Regarder ou placer et charger tous les sprites, début ?
-    createWindow(m_windowWidth, m_windowHeight, m_GameName);
+    this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
 
 }
 
@@ -43,12 +48,18 @@ void Engine::inputs()
                 m_window.close();
             }
 
+            if((event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::P))
+            {
+                this->m_GameState.pause();
+            }
+
             //TODO : Passage en full screen
 
             //TODO : Bouton pause => redirection menu
             if(m_GameState.currentGameState.m_isPaused)
             {
                 //Ne fait rien sur le jeu c'est en pause attends la commande de reprise
+
             }
             if(m_GameState.currentGameState.m_isGameOver)
             {
@@ -73,9 +84,17 @@ void Engine::update()
     m_dt = m_clock.restart();
     float deltaTime = m_dt.asSeconds();
     //Mise à jour du jeu
-    if(m_GameState.currentGameState.m_isPaused)
+    if(this->m_GameState.currentGameState.m_isPaused)
     {
         //Ne fait rien sur le jeu c'est en pause
+        this->m_stateText.setFont(this->m_font);
+        this->m_stateText.setCharacterSize(30);
+        this->m_stateText.setFillColor(Color::White);
+        float longueur = this->m_stateText.getLocalBounds().getCenter().x;
+        float hauteur = this->m_stateText.getLocalBounds().getCenter().y;
+        this->m_stateText.setPosition(Vector2f(this->m_windowWidth/2.f-longueur , this->m_windowHeight/2.F-hauteur));
+        this->m_stateText.setString("Pause");
+
     }
     if(m_GameState.currentGameState.m_isGameOver)
     {
@@ -103,6 +122,7 @@ void Engine::draw()
     if(m_GameState.currentGameState.m_isPaused)
     {
         //Ne fait rien sur le jeu c'est en pause
+        m_window.draw(this->m_stateText);
     }
     if(m_GameState.currentGameState.m_isGameOver)
     {

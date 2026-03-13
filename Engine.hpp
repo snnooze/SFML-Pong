@@ -15,6 +15,8 @@ class Engine
         Clock m_clock;
         Time m_dt;
         States m_GameState;
+        Font m_font;
+        Text m_stateText = Text(m_font, "");
     public : 
         Engine();
         void loop();

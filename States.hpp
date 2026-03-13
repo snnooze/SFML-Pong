@@ -9,9 +9,10 @@ class States
         States();
         struct
         {
-            bool m_isPaused = false;
+            bool m_isPaused = true;
             bool m_isGameOver = false;
             bool m_isMainMenu = false;
             bool m_isInGame  = false;
         }currentGameState;
+        void pause();
 };
