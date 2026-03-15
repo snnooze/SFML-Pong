@@ -2,13 +2,10 @@
 
 Engine::Engine()
 {
-    //chargement de police de texte
-    if(!this->m_font.openFromFile("Assets/Fonts/kenvector_future_thin.ttf"))
-    {
-        return;
-    }
     //TODO : Regarder ou placer et charger tous les sprites, début ?
     this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
+
+    this->m_PS.initialize(m_window);
 
 }
 
@@ -17,7 +14,7 @@ void Engine::createWindow(int m_windowWidth, int m_windowHeight, String m_GameNa
     //TODO : config file pour gestion du type et de la dimension de fenêtre ?
     VideoMode vm(Vector2u(m_windowWidth, m_windowHeight));
 
-    m_window.create(vm, m_GameName, sf::State::Windowed);
+    this->m_window.create(vm, m_GameName, sf::State::Windowed);
 }
 
 //Boucle principale du jeu
@@ -48,6 +45,7 @@ void Engine::inputs()
                 m_window.close();
             }
 
+            //Pendant le mode jeu, la lettre P met le jeu en pause ou hors pause
             if((event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::P))
             {
                 this->m_GameState.pause();
@@ -59,6 +57,9 @@ void Engine::inputs()
             if(m_GameState.currentGameState.m_isPaused)
             {
                 //Ne fait rien sur le jeu c'est en pause attends la commande de reprise
+
+                //Intercepte les inputs utilisateur en mode Pause
+                this->m_PS.inputs();
 
             }
             if(m_GameState.currentGameState.m_isGameOver)
@@ -87,13 +88,7 @@ void Engine::update()
     if(this->m_GameState.currentGameState.m_isPaused)
     {
         //Ne fait rien sur le jeu c'est en pause
-        this->m_stateText.setFont(this->m_font);
-        this->m_stateText.setCharacterSize(30);
-        this->m_stateText.setFillColor(Color::White);
-        float longueur = this->m_stateText.getLocalBounds().getCenter().x;
-        float hauteur = this->m_stateText.getLocalBounds().getCenter().y;
-        this->m_stateText.setPosition(Vector2f(this->m_windowWidth/2.f-longueur , this->m_windowHeight/2.F-hauteur));
-        this->m_stateText.setString("Pause");
+        this->m_PS.update(deltaTime);
 
     }
     if(m_GameState.currentGameState.m_isGameOver)
@@ -122,7 +117,7 @@ void Engine::draw()
     if(m_GameState.currentGameState.m_isPaused)
     {
         //Ne fait rien sur le jeu c'est en pause
-        m_window.draw(this->m_stateText);
+       this->m_PS.draw();
     }
     if(m_GameState.currentGameState.m_isGameOver)
     {
@@ -137,6 +132,6 @@ void Engine::draw()
         //Met en pause le jeu et affiche le menu principal
     }
 
-    m_window.display();
+    this->m_window.display();
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "States.hpp"
+#include "PauseScreen.hpp"
 
 using namespace sf;
 
@@ -15,8 +16,7 @@ class Engine
         Clock m_clock;
         Time m_dt;
         States m_GameState;
-        Font m_font;
-        Text m_stateText = Text(m_font, "");
+        PauseScreen m_PS;
     public : 
         Engine();
         void loop();
