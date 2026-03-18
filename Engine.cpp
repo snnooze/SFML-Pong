@@ -2,10 +2,19 @@
 
 Engine::Engine()
 {
+
     //TODO : Regarder ou placer et charger tous les sprites, début ?
     this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
 
-    this->m_PS.initialize(m_window);
+    this->m_viewMMS.initialize(this->m_window);
+    this->m_viewMMS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
+    this->m_viewMMS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
+
+    this->m_PS.initialize(this->m_window);    //Initialisatin du menu de Pause   
+    this->m_PS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
+    this->m_PS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
+
+    //this->m_MMS.initialize(this->m_window);   //Initialisation du menu principal
 
 }
 
@@ -45,20 +54,25 @@ void Engine::inputs()
                 m_window.close();
             }
 
-            //Pendant le mode jeu, la lettre P met le jeu en pause ou hors pause
-            if((event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::P))
+            //Pendant le mode jeu et la pause la lettre P fait passer le jeu en pause ou hors pause
+            if((this->m_GameState.currentGameState.m_isInGame || this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::P))
             {
                 this->m_GameState.pause();
             }
 
+            //La touche Escape fait pasculer en mode Main menu
+            if((event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Escape))
+            {
+                this->m_GameState.mainMenu();
+            }
+
             //TODO : Passage en full screen
 
-            //TODO : Bouton pause => redirection menu
             if(m_GameState.currentGameState.m_isPaused)
             {
                 //Ne fait rien sur le jeu c'est en pause attends la commande de reprise
 
-                //Intercepte les inputs utilisateur en mode Pause
+                //Intercepte les inputs utilisateur en mode Pause (faire passer les events en argument ? )
                 this->m_PS.inputs();
 
             }
@@ -101,6 +115,7 @@ void Engine::update()
     }
     if(m_GameState.currentGameState.m_isMainMenu)
     {
+        //this->m_MMS.update(deltaTime);
         //Met en pause le jeu et affiche le menu principal
     }
 
@@ -117,6 +132,7 @@ void Engine::draw()
     if(m_GameState.currentGameState.m_isPaused)
     {
         //Ne fait rien sur le jeu c'est en pause
+       this->m_window.setView(this->m_PS); 
        this->m_PS.draw();
     }
     if(m_GameState.currentGameState.m_isGameOver)
@@ -130,6 +146,8 @@ void Engine::draw()
     if(m_GameState.currentGameState.m_isMainMenu)
     {
         //Met en pause le jeu et affiche le menu principal
+        this->m_window.setView(this->m_viewMMS);
+        this->m_viewMMS.draw();
     }
 
     this->m_window.display();

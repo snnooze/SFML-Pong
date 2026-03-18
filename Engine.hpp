@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "States.hpp"
 #include "PauseScreen.hpp"
+#include "MainMenuScreen.hpp"
 
 using namespace sf;
 
@@ -17,6 +18,8 @@ class Engine
         Time m_dt;
         States m_GameState;
         PauseScreen m_PS;
+        //MainMenuScreen m_MMS;
+        MainMenuScreen m_viewMMS;
     public : 
         Engine();
         void loop();

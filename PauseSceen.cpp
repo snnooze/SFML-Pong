@@ -1,11 +1,8 @@
 #include <iostream>
-#include <SFML/Graphics.hpp>
 #include "PauseScreen.hpp"
 
-PauseScreen::PauseScreen()
+PauseScreen::PauseScreen() : sf::View()
 {
-    
-        
 }
 
 void PauseScreen::initialize(sf::RenderWindow &parent)
@@ -22,9 +19,8 @@ void PauseScreen::initialize(sf::RenderWindow &parent)
         this->m_stateText.setFillColor(sf::Color::White);
         this->m_stateText.setString("Pause");
         float longueur = this->m_stateText.getLocalBounds().getCenter().x;
-        std::cout << longueur;
         float hauteur = this->m_stateText.getGlobalBounds().getCenter().y;
-        this->m_stateText.setPosition(sf::Vector2f(this->m_parentWidth/2.f-longueur , this->m_parentHeight/2.F-hauteur));
+        this->m_stateText.setPosition(sf::Vector2f(this->m_parentWidth/2.f-longueur , this->m_parentHeight/3.F-hauteur));
     }
     else
     {
@@ -34,14 +30,13 @@ void PauseScreen::initialize(sf::RenderWindow &parent)
 
 void PauseScreen::inputs()
 {
+    //Todo : bouton vers menu principal
 
+    //Todo : bouton vers Quitter
 }
 
 void PauseScreen::update(float dt)
 {
-        
-        
-
 }
 
 void PauseScreen::draw()

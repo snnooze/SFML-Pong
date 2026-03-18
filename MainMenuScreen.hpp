@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-class PauseScreen : public sf::View
+class MainMenuScreen : public sf::View
 {
 
     private :
@@ -12,9 +12,10 @@ class PauseScreen : public sf::View
         int m_parentHeight; 
 
     public : 
-        PauseScreen();
+        MainMenuScreen();
         void initialize(sf::RenderWindow &parent);
         void inputs();
         void update(float dt = 0.f);
+        sf::Sprite getSprite();
         void draw();
 };
