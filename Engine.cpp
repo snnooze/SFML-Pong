@@ -3,19 +3,54 @@
 Engine::Engine()
 {
 
+    if(this->m_Font.openFromFile("Assets/Fonts/kenvector_future_thin.ttf"))
+    {
+        if(this->texturesLoader())
+        {
+
+            this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
+
+            this->m_viewMMS.initialize(this->m_window, this->m_textures, this->m_Font); // Initialisation du Main Menu
+            this->m_viewMMS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
+            this->m_viewMMS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
+
+            this->m_PS.initialize(this->m_window);    //Initialisatin du menu de Pause   
+            this->m_PS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
+            this->m_PS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
+
+        }
+        else
+        {
+            std::cout << "Textures loading Failed";
+        }
+        
+    }
+    else
+    {
+        std::cout << "Font loading Failed";
+    }
     //TODO : Regarder ou placer et charger tous les sprites, début ?
-    this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
-
-    this->m_viewMMS.initialize(this->m_window);
-    this->m_viewMMS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
-    this->m_viewMMS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
-
-    this->m_PS.initialize(this->m_window);    //Initialisatin du menu de Pause   
-    this->m_PS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
-    this->m_PS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
+   
 
     //this->m_MMS.initialize(this->m_window);   //Initialisation du menu principal
 
+}
+
+bool Engine::texturesLoader()
+{
+    if(!this->m_textures[0].loadFromFile("Assets/Graphics/logo.png"))
+    {
+        std::cout << "Logo loading Failed";
+        return false;
+    }
+
+    if(!this->m_textures[1].loadFromFile("Assets/Graphics/Button.png"))
+    {
+        std::cout << "Button loading Failed";
+        return false;
+    }
+
+    return true;
 }
 
 void Engine::createWindow(int m_windowWidth, int m_windowHeight, String m_GameName)
