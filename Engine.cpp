@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Engine.hpp"
 
 Engine::Engine()
@@ -7,16 +8,26 @@ Engine::Engine()
     {
         if(this->texturesLoader())
         {
+            if(this->m_mainMenuMusic.openFromFile("Assets/Sounds/music.mp3"))
+            {
+                this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
 
-            this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
+                this->m_viewMMS = MainMenuScreen();
+                this->m_viewMMS.initialize(this->m_window, this->m_textures, this->m_Font); // Initialisation du Main Menu
+                this->m_viewMMS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
+                this->m_viewMMS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
 
-            this->m_viewMMS.initialize(this->m_window, this->m_textures, this->m_Font); // Initialisation du Main Menu
-            this->m_viewMMS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
-            this->m_viewMMS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
+                this->m_PS.initialize(this->m_window);    //Initialisatin du menu de Pause   
+                this->m_PS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
+                this->m_PS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
+            }
+            else
+            {
+                std::cout << "Music loading Failed";
 
-            this->m_PS.initialize(this->m_window);    //Initialisatin du menu de Pause   
-            this->m_PS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
-            this->m_PS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
+            }
+
+            
 
         }
         else
@@ -38,6 +49,12 @@ Engine::Engine()
 
 bool Engine::texturesLoader()
 {
+    if(!this->icone.loadFromFile("Assets/Graphics/icon.png"))
+    {
+        std::cout << "Icon loading Failed";
+        return false;
+    }
+
     if(!this->m_textures[0].loadFromFile("Assets/Graphics/logo.png"))
     {
         std::cout << "Logo loading Failed";
@@ -59,6 +76,8 @@ void Engine::createWindow(int m_windowWidth, int m_windowHeight, String m_GameNa
     VideoMode vm(Vector2u(m_windowWidth, m_windowHeight));
 
     this->m_window.create(vm, m_GameName, sf::State::Windowed);
+
+    this->m_window.setIcon(this->icone);
 }
 
 //Boucle principale du jeu
@@ -121,6 +140,34 @@ void Engine::inputs()
             }
             if(m_GameState.currentGameState.m_isMainMenu)
             {
+                if(!this->m_musciPlay)
+                {
+                    this->m_mainMenuMusic.play();
+                    this->m_musciPlay = true;
+                }
+
+                //std::cout<< "Main menu \n";
+                if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Down)
+                {
+
+                    this->m_viewMMS.m_menuPosition+=1;
+                    std::cout<< "Main menu +1 \n";
+                    if(this->m_viewMMS.m_menuPosition>3)
+                    {
+                        this->m_viewMMS.m_menuPosition=1;
+                        std::cout<< "Main menu -> 1 \n";
+                    }
+                }
+                if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Up)
+                {
+                    this->m_viewMMS.m_menuPosition-=1;
+                    std::cout<< "Main menu -1 \n";
+                    if(this->m_viewMMS.m_menuPosition<1)
+                    {
+                        this->m_viewMMS.m_menuPosition=3;
+                        std::cout<< "Main menu -> 1 \n";
+                    }
+                }
                 //Intercepte les évènements joueur sur le menu (souris?)
             }
 
@@ -138,6 +185,11 @@ void Engine::update()
     {
         //Ne fait rien sur le jeu c'est en pause
         this->m_PS.update(deltaTime);
+        if(this->m_musciPlay)
+        {
+            this->m_mainMenuMusic.stop();
+            this->m_musciPlay = false;
+        }
 
     }
     if(m_GameState.currentGameState.m_isGameOver)
@@ -150,6 +202,7 @@ void Engine::update()
     }
     if(m_GameState.currentGameState.m_isMainMenu)
     {
+        this->m_viewMMS.update();
         //this->m_MMS.update(deltaTime);
         //Met en pause le jeu et affiche le menu principal
     }

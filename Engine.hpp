@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "States.hpp"
 #include "PauseScreen.hpp"
 #include "MainMenuScreen.hpp"
@@ -25,6 +26,9 @@ class Engine
         PauseScreen m_PS;
         //MainMenuScreen m_MMS;
         MainMenuScreen m_viewMMS;
+        sf::Music m_mainMenuMusic;
+        bool m_musciPlay = false;
+        sf::Image icone;
     public : 
         Engine();
         void loop();

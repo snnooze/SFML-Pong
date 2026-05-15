@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Button.hpp"
 
 class MainMenuScreen : public sf::View
 {
@@ -11,9 +12,22 @@ class MainMenuScreen : public sf::View
         sf::Texture *m_textures[2];
         int m_parentWidth;
         int m_parentHeight; 
+        Button m_1PlayerBtn =  Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
+        sf::Text m_labelTxt = sf::Text(m_font, "");
+
+        Button m_2PlayersBtn =  Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
+        sf::Text m_label2playersTxt = sf::Text(m_font, "");
+
+        Button m_settingsButton =  Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
+        sf::Text m_settingsLabelTxt = sf::Text(m_font, "");
+        //Button m_2PlayersBtn;
+        //Button m_settingsBtn;
+        //Button m_creditsBtn;
+
 
     public : 
         MainMenuScreen();
+        int m_menuPosition = 1;
         void initialize(sf::RenderWindow &parent, sf::Texture *textures, sf::Font &font);
         void inputs();
         void update(float dt = 0.f);
