@@ -1,19 +1,21 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-class PauseScreen : public sf::View
+using namespace sf;
+
+class PauseScreen : public View
 {
 
     private :
-        sf::Font m_font;
-        sf::Text m_stateText = sf::Text(m_font, "");
-        sf::RenderWindow *m_parent;
+        Font m_font;
+        Text m_stateText = Text(m_font, "");
+        RenderWindow *m_parent;
         int m_parentWidth;
         int m_parentHeight; 
 
     public : 
         PauseScreen();
-        void initialize(sf::RenderWindow &parent);
+        void initialize(RenderWindow &parent);
         void inputs();
         void update(float dt = 0.f);
         void draw();
