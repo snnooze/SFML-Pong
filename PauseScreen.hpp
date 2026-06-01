@@ -14,8 +14,7 @@ class PauseScreen : public View
         int m_parentHeight; 
 
     public : 
-        PauseScreen();
-        void initialize(RenderWindow &parent);
+        PauseScreen(RenderWindow &parent);
         void inputs();
         void update(float dt = 0.f);
         void draw();

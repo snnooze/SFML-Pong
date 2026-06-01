@@ -1,66 +1,50 @@
 #include <iostream>
 #include "MainMenuScreen.hpp"
 
-MainMenuScreen::MainMenuScreen() : sf::View()
+MainMenuScreen::MainMenuScreen(sf::RenderWindow &par, sf::Texture textures[2], const sf::Font &font) : sf::View()
 {        
-
-}
-
-void MainMenuScreen::initialize(sf::RenderWindow &par, sf::Texture textures[2], sf::Font &font)
-{
+    //Get the parent Window
     this->m_parent = &par;
 
-    this->m_font = font;
+    //Loading the font for writing text on the view
+    if(!this->m_font.openFromFile("Assets/Fonts/kenvector_future_thin.ttf"))
+    {
+        std::cout<<"Font could not be opened"<<std::endl;
+    }
 
-    for(int i = 0; i<2; i++)
+    //Get the textures loaded at the game launch
+    for(int i = 0; i<=2; i++)
     {
         this->m_textures[i] = &textures[i];
     }
 
-    this->m_parentWidth = par.getSize().x;
-    this->m_parentHeight = par.getSize().y;
-   
-    this->m_stateText.setFont(this->m_font);
-    this->m_stateText.setCharacterSize(30);
-    this->m_stateText.setFillColor(sf::Color::White);
-    this->m_stateText.setString("Main Menu");
-    float longueur = this->m_stateText.getLocalBounds().getCenter().x;
-    float hauteur = this->m_stateText.getGlobalBounds().getCenter().y;
-    this->m_stateText.setPosition(sf::Vector2f(this->m_parentWidth/2.f-longueur , this->m_parentHeight/2.f-hauteur-30));
+    this->m_parentWidth = this->m_parent->getSize().x;
+    this->m_parentHeight = this->m_parent->getSize().y;
 
+    //Initialize the Menu Title
+    this->m_stateText = sf::Text(this->m_font, "MainMenu", 30);
+    this->m_stateText.setFillColor(sf::Color::White);
+
+    //Initialize the 1 PLayer button
     this->m_1PlayerBtn = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
     this->m_1PlayerBtn.initialize(*this->m_textures);
-
-    this->m_labelTxt.setFont(this->m_font);
-    this->m_labelTxt.setString("1 Player");
-    this->m_labelTxt.setCharacterSize(25);
+    //Initialize the Text of the button
+    this->m_labelTxt = sf::Text(this->m_font, "1 Player", 25);
     this->m_labelTxt.setFillColor(sf::Color::White);
-    longueur = this->m_labelTxt.getLocalBounds().getCenter().x;
-    hauteur = this->m_labelTxt.getGlobalBounds().getCenter().y;
-    this->m_labelTxt.setPosition(sf::Vector2f(this->m_parentWidth/2.f-longueur , this->m_parentHeight/2.f-hauteur+50));
 
+    //Initialize the 2 players Button
     this->m_2PlayersBtn = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
     this->m_2PlayersBtn.initialize(*this->m_textures);
-
-    this->m_label2playersTxt.setFont(this->m_font);
-    this->m_label2playersTxt.setString("2 Players");
-    this->m_label2playersTxt.setCharacterSize(25);
+    //Initialize the 2 Players Text for the button
+    this->m_label2playersTxt = sf::Text(this->m_font, "2 Players", 25);
     this->m_label2playersTxt.setFillColor(sf::Color::White);
-    longueur = this->m_label2playersTxt.getLocalBounds().getCenter().x;
-    hauteur = this->m_label2playersTxt.getGlobalBounds().getCenter().y;
-    this->m_label2playersTxt.setPosition(sf::Vector2f(this->m_parentWidth/2.f-longueur , this->m_parentHeight/2.f-hauteur+50+64+20));
 
-
+    //Initialize the Settings Button
     this->m_settingsButton = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
     this->m_settingsButton.initialize(*this->m_textures);
-
-    this->m_settingsLabelTxt.setFont(this->m_font);
-    this->m_settingsLabelTxt.setString("Settings");
-    this->m_settingsLabelTxt.setCharacterSize(25);
+    //Initialize the Settings Text
+    this->m_settingsLabelTxt = sf::Text(this->m_font, "Settings", 25);
     this->m_settingsLabelTxt.setFillColor(sf::Color::White);
-    longueur = this->m_settingsLabelTxt.getLocalBounds().getCenter().x;
-    hauteur = this->m_settingsLabelTxt.getGlobalBounds().getCenter().y;
-    this->m_settingsLabelTxt.setPosition(sf::Vector2f(this->m_parentWidth/2.f-longueur , this->m_parentHeight/2.f-hauteur+50+64+20+64+20));
 
 }
 
@@ -71,8 +55,7 @@ void MainMenuScreen::inputs()
 
 void MainMenuScreen::update(float dt)
 {
-    //std::cout << "Set hover \n";
-    
+    //moving between the main menu button with the arrows of the keyboard switch they state
     switch (this->m_menuPosition)
     {
     case 1:
@@ -105,32 +88,55 @@ void MainMenuScreen::update(float dt)
 
 void MainMenuScreen::draw()
 {
-    //sf::Sprite spriteLogo = this->getSprite();
-    //this->m_parent->draw(getSprite());
+    //Load the background image and set the positions
+    sf::Sprite background( *this->m_textures[2]);
+    background.setOrigin(background.getLocalBounds().position);
+    background.setPosition({0,0});
+    //Draw the background of the view
+    this->m_parent->draw(background);
 
+    //Load end draw the logo of the game
     sf::Sprite logo( *this->m_textures[0]);
-
-    logo.setPosition(sf::Vector2f(this->m_parentWidth/2.f-556/2.f, this->m_parentHeight/2.f-184/2.f-150));
-
+    logo.setOrigin(logo.getLocalBounds().position);
+    logo.setPosition({(this->m_parent->getSize().x/2.f) - (logo.getLocalBounds().size.x/2),15});
     this->m_parent->draw(logo);
-    
+
+    //Draw the "main menu title
+    this->m_stateText.setPosition({(this->m_parent->getSize().x/2.f) - (this->m_stateText.getLocalBounds().size.x/2), 15 + 30 + logo.getLocalBounds().size.y});
     this->m_parent->draw(this->m_stateText);
 
-    this->m_1PlayerBtn.setPosition(sf::Vector2f(this->m_parentWidth/2.f-150/2.f, this->m_parentHeight/2.f-64/2.f+50.f));
-
+    //Draw the "1 Player Button"
+    this->m_1PlayerBtn.setOrigin(this->m_1PlayerBtn.getLocalBounds().position);
+    this->m_1PlayerBtn.setPosition(sf::Vector2f(this->m_parent->getSize().x/2.f-this->m_1PlayerBtn.getLocalBounds().size.x/2, 15 + 30 + logo.getLocalBounds().size.y + 30 + this->m_stateText.getLocalBounds().size.y));
     this->m_parent->draw(this->m_1PlayerBtn);
 
+    //Write the text for the button 1 PLayer
     this->m_parent->draw(this->m_labelTxt);
+    this->m_labelTxt.setOrigin(this->m_labelTxt.getLocalBounds().getCenter());
+    this->m_labelTxt.setPosition(this->m_1PlayerBtn.getGlobalBounds().getCenter());
+    //this->m_labelTxt.setPosition(sf::Vector2f(this->m_parent->getSize().x/2.f-this->m_labelTxt.getLocalBounds().size.x/2, 15 + 30 + logo.getLocalBounds().size.y + 30 + this->m_stateText.getLocalBounds().size.y + this->m_1PlayerBtn.getLocalBounds().size.y/2));
 
-    this->m_2PlayersBtn.setPosition(sf::Vector2f(this->m_parentWidth/2.f-150/2.f, this->m_parentHeight/2.f-64/2.f+50+64+20.f));
-
+    //Draw the "2 Players" Button
+    this->m_2PlayersBtn.setOrigin(this->m_2PlayersBtn.getLocalBounds().position);
+    this->m_2PlayersBtn.setPosition(sf::Vector2f(this->m_parent->getSize().x/2.f-this->m_1PlayerBtn.getLocalBounds().size.x/2, 15 + 30 + logo.getLocalBounds().size.y + 30*2 + this->m_stateText.getLocalBounds().size.y + this->m_1PlayerBtn.getLocalBounds().size.y));
     this->m_parent->draw(this->m_2PlayersBtn);
 
+    //Write the text of the button 2 PLayers
     this->m_parent->draw(this->m_label2playersTxt);
+    this->m_label2playersTxt.setOrigin(this->m_label2playersTxt.getLocalBounds().getCenter());
+    this->m_label2playersTxt.setPosition(this->m_2PlayersBtn.getGlobalBounds().getCenter());
+    //this->m_label2playersTxt.setPosition(sf::Vector2f(this->m_parent->getSize().x/2.f-this->m_1PlayerBtn.getLocalBounds().size.x/2, 15 + 30 + logo.getLocalBounds().size.y + 30*2 + this->m_stateText.getLocalBounds().size.y + this->m_1PlayerBtn.getLocalBounds().size.y));
 
-    this->m_settingsButton.setPosition(sf::Vector2f(this->m_parentWidth/2.f-150/2.f, this->m_parentHeight/2.f-64/2.f+50+64+20+64+20.f));
-
+    //Draw the Settings Button
+    this->m_settingsButton.setOrigin(this->m_settingsButton.getLocalBounds().position);
+    this->m_settingsButton.setPosition(sf::Vector2f(this->m_parent->getSize().x/2.f-this->m_1PlayerBtn.getLocalBounds().size.x/2, 15 + 30 + logo.getLocalBounds().size.y + 30*3 + this->m_stateText.getLocalBounds().size.y + this->m_1PlayerBtn.getLocalBounds().size.y + this->m_2PlayersBtn.getLocalBounds().size.y));
     this->m_parent->draw(this->m_settingsButton);
 
+    //Write the Settings Text on the BUtton
     this->m_parent->draw(this->m_settingsLabelTxt);
+    this->m_settingsLabelTxt.setOrigin(this->m_settingsLabelTxt.getLocalBounds().getCenter());
+    this->m_settingsLabelTxt.setPosition(this->m_settingsButton.getGlobalBounds().getCenter());
+    //this->m_settingsLabelTxt.setPosition(sf::Vector2f(this->m_parent->getSize().x/2.f-this->m_1PlayerBtn.getLocalBounds().size.x/2, 15 + 30 + logo.getLocalBounds().size.y + 30*3 + this->m_stateText.getLocalBounds().size.y + this->m_1PlayerBtn.getLocalBounds().size.y + this->m_2PlayersBtn.getLocalBounds().size.y));
+
+
 }

@@ -12,12 +12,14 @@ Engine::Engine()
             {
                 this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
 
-                this->m_viewMMS = MainMenuScreen();
-                this->m_viewMMS.initialize(this->m_window, this->m_textures, this->m_Font); // Initialisation du Main Menu
+                this->m_window.setVerticalSyncEnabled(true);
+
+                //this->m_window.setFramerateLimit(60);
+
                 this->m_viewMMS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
                 this->m_viewMMS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
 
-                this->m_PS.initialize(this->m_window);    //Initialisatin du menu de Pause   
+
                 this->m_PS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
                 this->m_PS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
             }
@@ -67,13 +69,19 @@ bool Engine::texturesLoader()
         return false;
     }
 
+    if(!this->m_textures[2].loadFromFile("Assets/Graphics/background.png"))
+    {
+        std::cout << "Background loading Failed";
+        return false;
+    }
+
     return true;
 }
 
 void Engine::createWindow(int m_windowWidth, int m_windowHeight, String m_GameName)
 {
     //TODO : config file pour gestion du type et de la dimension de fenêtre ?
-    VideoMode vm(Vector2u(m_windowWidth, m_windowHeight));
+    VideoMode vm(Vector2u(this->m_windowWidth, this->m_windowHeight));
 
     this->m_window.create(vm, m_GameName, sf::State::Windowed);
 

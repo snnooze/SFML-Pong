@@ -1,11 +1,7 @@
 #include <iostream>
 #include "PauseScreen.hpp"
 
-PauseScreen::PauseScreen() : sf::View()
-{
-}
-
-void PauseScreen::initialize(sf::RenderWindow &parent)
+PauseScreen::PauseScreen(RenderWindow &parent) : sf::View()
 {
     this->m_parent = &parent;
 
@@ -20,7 +16,8 @@ void PauseScreen::initialize(sf::RenderWindow &parent)
         this->m_stateText.setString("Pause");
         float longueur = this->m_stateText.getLocalBounds().getCenter().x;
         float hauteur = this->m_stateText.getGlobalBounds().getCenter().y;
-        this->m_stateText.setPosition(sf::Vector2f(this->m_parentWidth/2.f-longueur , this->m_parentHeight/3.F-hauteur));
+
+
     }
     else
     {
@@ -41,5 +38,7 @@ void PauseScreen::update(float dt)
 
 void PauseScreen::draw()
 {
+    this->m_stateText.setOrigin(this->m_stateText.getLocalBounds().position);
+    this->m_stateText.setPosition(sf::Vector2f(this->m_parent->getSize().x/2.f-this->m_stateText.getLocalBounds().size.x , 15+30+184));
      this->m_parent->draw(this->m_stateText);
 }

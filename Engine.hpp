@@ -12,20 +12,20 @@ class Engine
 {
     private :
         RenderWindow m_window;
-        int m_windowWidth = 800;
-        int m_windowHeight = 600;
+        int m_windowWidth = 1287;
+        int m_windowHeight = 726;
         void createWindow(int width, int height, String name);
         bool texturesLoader();
         Font m_Font;
         Texture m_Logo;
-        Texture m_textures[2];
+        Texture m_textures[3];
         const String m_GameName = "#Pong";
         Clock m_clock;
         Time m_dt;
         States m_GameState;
-        PauseScreen m_PS;
+        PauseScreen m_PS = PauseScreen(this->m_window);
         //MainMenuScreen m_MMS;
-        MainMenuScreen m_viewMMS;
+        MainMenuScreen m_viewMMS = MainMenuScreen(this->m_window, this->m_textures, this->m_Font);
         sf::Music m_mainMenuMusic;
         bool m_musciPlay = false;
         sf::Image icone;
