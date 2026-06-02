@@ -22,6 +22,9 @@ Game::Game(sf::RenderWindow &par, sf::Texture textures[5], const sf::Font &font)
     this->m_parentWidth = this->m_parent->getSize().x;
     this->m_parentHeight = this->m_parent->getSize().y;
 
+    this->m_paddleLeft = Paddle(par, this->m_textures, true);
+    this->m_paddleRight = Paddle(par, this->m_textures, false);
+
 }
 
 void Game::draw() {
@@ -31,6 +34,13 @@ void Game::draw() {
     background.setPosition(this->getCenter());
     //Draw the background of the view
     this->m_parent->draw(background);
+
+    this->m_parent->draw(this->m_paddleLeft);
+    this->m_paddleLeft.setOrigin(this->m_paddleRight.getLocalBounds().getCenter());
+    this->m_paddleLeft.setPosition({-(this->m_parent->getSize().x/2.f - 50), 0});
+    this->m_parent->draw(this->m_paddleRight);
+    this->m_paddleRight.setOrigin(this->m_paddleRight.getLocalBounds().getCenter());
+    this->m_paddleRight.setPosition({this->m_parent->getSize().x/2.f - 50, 0});
 }
 
 

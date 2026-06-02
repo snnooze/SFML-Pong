@@ -75,6 +75,18 @@ bool Engine::texturesLoader()
         return false;
     }
 
+    if(!this->m_textures[3].loadFromFile("Assets/Graphics/ball.png"))
+    {
+        std::cout << "Ball loading Failed";
+        return false;
+    }
+
+    if(!this->m_textures[4].loadFromFile("Assets/Graphics/paddle.png"))
+    {
+        std::cout << "Paddle loading Failed";
+        return false;
+    }
+
     return true;
 }
 

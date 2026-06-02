@@ -19,7 +19,7 @@ class Engine
         bool texturesLoader();
         Font m_Font;
         Texture m_Logo;
-        Texture m_textures[3];
+        Texture m_textures[5];
         const String m_GameName = "#Pong";
         Clock m_clock;
         Time m_dt;

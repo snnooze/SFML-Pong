@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Paddle.hpp"
 
 class Game : public sf::View
 {
@@ -9,8 +10,8 @@ private :
     int m_parentWidth = 0;
     int m_parentHeight = 0;
     int m_mode2Players = false;
-    //PaddleLeft
-    //PaddleRight
+    Paddle m_paddleLeft = Paddle(*this->m_parent, this->m_textures, true);
+    Paddle m_paddleRight = Paddle(*this->m_parent, this->m_textures, false);
     //Ball
     int m_scorePlayer1 = 0;
     int m_scorePlayer2 = 0;
