@@ -155,25 +155,52 @@ void Engine::inputs()
                 }
 
                 //std::cout<< "Main menu \n";
+                //Appuis sur la flèche du bas
                 if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Down)
                 {
 
                     this->m_viewMMS.m_menuPosition+=1;
                     std::cout<< "Main menu +1 \n";
-                    if(this->m_viewMMS.m_menuPosition>3)
+                    if(this->m_viewMMS.m_menuPosition>5)
                     {
                         this->m_viewMMS.m_menuPosition=1;
                         std::cout<< "Main menu -> 1 \n";
                     }
                 }
+                //Appuis sur la flèche du haut
                 if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Up)
                 {
                     this->m_viewMMS.m_menuPosition-=1;
                     std::cout<< "Main menu -1 \n";
                     if(this->m_viewMMS.m_menuPosition<1)
                     {
-                        this->m_viewMMS.m_menuPosition=3;
+                        this->m_viewMMS.m_menuPosition=5;
                         std::cout<< "Main menu -> 1 \n";
+                    }
+                }
+                //Appuis sur Enter
+                if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Enter) {
+                    switch (this->m_viewMMS.m_menuPosition)
+                    {
+                        case 1 :
+                            //Lance une partie à 1 joueur
+                            this->m_GameState.game();
+                            break;
+                        case 2 :
+                            //Lance une partie à 2 joueurs
+                            break;
+                        case 3 :
+                            //Affiche les settings
+                            break;
+                        case 4 :
+                            //Affiche les High scores
+                            break;
+                        case 5 :
+                            m_window.close();
+                            break;
+                        default :
+                            //Ne fait rien;
+                            break;
                     }
                 }
                 //Intercepte les évènements joueur sur le menu (souris?)
@@ -204,9 +231,14 @@ void Engine::update()
     {
         //Affiche l'écran de fin
     }
-    if(m_GameState.currentGameState.m_isInGame)
-    {
+    if(m_GameState.currentGameState.m_isInGame) {
         //Met à jour le jeu
+        if(this->m_musciPlay)
+        {
+            this->m_mainMenuMusic.stop();
+            this->m_musciPlay = false;
+        }
+        this->m_game.setSize({(float)this->m_windowWidth, (float)this->m_windowHeight});
     }
     if(m_GameState.currentGameState.m_isMainMenu)
     {
@@ -238,6 +270,9 @@ void Engine::draw()
     if(m_GameState.currentGameState.m_isInGame)
     {
         //Met à jour le jeu
+        this->m_window.setView(this->m_game);
+        this->m_game.draw();
+
     }
     if(m_GameState.currentGameState.m_isMainMenu)
     {

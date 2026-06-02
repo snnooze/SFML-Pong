@@ -25,7 +25,9 @@ FetchContent_MakeAvailable(SFML)
 
 #List files of the game
 
-add_executable(SFML_Pong main.cpp Engine.cpp Button.cpp MainMenuScreen.cpp PauseScreen.cpp States.cpp)
+add_executable(SFML_Pong main.cpp Engine.cpp Button.cpp MainMenuScreen.cpp PauseScreen.cpp States.cpp
+        Game.cpp
+        Game.hpp)
 target_compile_features(SFML_Pong PRIVATE cxx_std_17)
 
 target_link_libraries(SFML_Pong PRIVATE SFML::Graphics SFML::Audio)

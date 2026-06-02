@@ -21,9 +21,14 @@ class MainMenuScreen : public sf::View
 
         Button m_settingsButton =  Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
         sf::Text m_settingsLabelTxt = sf::Text(m_font, "");
-        //Button m_2PlayersBtn;
-        //Button m_settingsBtn;
-        //Button m_creditsBtn;
+
+        Button m_scoresButton =  Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
+        sf::Text m_scoresLabelTxt = sf::Text(m_font, "");
+
+        Button m_exitButton =  Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
+        sf::Text m_exitLabelTxt = sf::Text(m_font, "");
+
+
 
 
     public : 

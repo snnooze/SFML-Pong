@@ -5,6 +5,7 @@
 #include "States.hpp"
 #include "PauseScreen.hpp"
 #include "MainMenuScreen.hpp"
+#include "Game.hpp"
 
 using namespace sf;
 
@@ -26,6 +27,7 @@ class Engine
         PauseScreen m_PS = PauseScreen(this->m_window);
         //MainMenuScreen m_MMS;
         MainMenuScreen m_viewMMS = MainMenuScreen(this->m_window, this->m_textures, this->m_Font);
+        Game m_game = Game(this->m_window, this->m_textures, this->m_Font);
         sf::Music m_mainMenuMusic;
         bool m_musciPlay = false;
         sf::Image icone;
