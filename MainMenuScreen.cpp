@@ -195,3 +195,5 @@ void MainMenuScreen::draw()
     this->m_exitLabelTxt.setPosition(this->m_exitButton.getGlobalBounds().getCenter());
 
 }
+
+MainMenuScreen::~MainMenuScreen() = default;

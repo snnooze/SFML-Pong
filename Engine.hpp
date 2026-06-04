@@ -38,4 +38,5 @@ class Engine
         void inputs();
         void update();
         void draw();
+        ~Engine();
 };

@@ -22,8 +22,8 @@ Game::Game(sf::RenderWindow &par, sf::Texture textures[5], const sf::Font &font)
     this->m_parentWidth = this->m_parent->getSize().x;
     this->m_parentHeight = this->m_parent->getSize().y;
 
-    this->m_paddleLeft = Paddle(par, this->m_textures, true);
-    this->m_paddleRight = Paddle(par, this->m_textures, false);
+    this->m_paddleLeft = Paddle(par, this->m_textures, true, true);
+    this->m_paddleRight = Paddle(par, this->m_textures, false, false);
     this->m_ball = Ball(par, this->m_textures);
 
     this->m_paddleRight.setOrigin(this->m_paddleRight.getLocalBounds().getCenter());
@@ -54,24 +54,44 @@ void Game::update(float dtTime)
 {
     if (this->m_isActive)
     {
-
+    //Gestion du heurt de la balle sur les Paddles
         if (this->m_ball.getGlobalBounds().findIntersection(this->m_paddleRight.getGlobalBounds()) || this->m_ball.getGlobalBounds().findIntersection(this->m_paddleLeft.getGlobalBounds())) {
             this->m_ball.reverseDirection();
         }
-
+        //Gestion de sortie de balle sur la gauche et droite et remise de la balle au centre
         if (this->m_ball.getGlobalBounds().position.x >= this->m_parent->getSize().x-25 || this->m_ball.getGlobalBounds().position.x <= 0)
         {
             this->m_isActive = false;
             this->reset();
         }
-
         this->m_ball.update(dtTime);
 
-        sf::Vector2f pdr = {this->m_paddleRight.getPosition().x, this->m_paddleRight.getPosition().y + (250 * dtTime )* this->movePlayer1};
-        sf::Vector2 pdl = {this->m_paddleLeft.getPosition().x, this->m_paddleLeft.getPosition().y + (250 * dtTime )* this->movePlayer2 };
 
+        MyHelpers mh;
+
+        if (!this->m_paddleLeft.isAI()) {
+            sf::Vector2 pdl = {this->m_paddleLeft.getPosition().x, this->m_paddleLeft.getPosition().y + (250 * dtTime )* this->movePlayer2 };
+            this->m_paddleLeft.setPosition(pdl);
+
+        }
+        else {
+
+            if (this->m_ball.getGlobalBounds().getCenter().y != this->m_paddleLeft.getPosition().y) {
+                if (this->m_ball.getGlobalBounds().getCenter().y < this->m_paddleLeft.getPosition().y) {
+                    this->movePlayer2 = -1;
+                }
+                else {
+                    this->movePlayer2 = +1;
+                }
+
+                sf::Vector2f pdl = {this->m_paddleLeft.getPosition().x, this->m_paddleLeft.getPosition().y + (250 * dtTime )* this->movePlayer2};
+                this->m_paddleLeft.setPosition(pdl);
+            }
+
+        }
+        sf::Vector2f pdr = {this->m_paddleRight.getPosition().x, this->m_paddleRight.getPosition().y + (250 * dtTime )* this->movePlayer1};
         this->m_paddleRight.setPosition(pdr);
-        this->m_paddleLeft.setPosition(pdl);
+
 
         this->m_paddleLeft.update(dtTime);
         this->m_paddleRight.update(dtTime);
@@ -124,3 +144,5 @@ void Game::reset() {
     this->m_ball.setPosition({(float)this->m_parent->getSize().x/2,(float)this->m_parent->getSize().y/2});
     this->m_paddleLeft.setPosition({50.f, this->m_parent->getSize().y/2.f});
 }
+
+Game::~Game() = default;

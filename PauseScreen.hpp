@@ -18,4 +18,5 @@ class PauseScreen : public View
         void inputs();
         void update(float dt = 0.f);
         void draw();
+        ~PauseScreen();
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "MyHelpers.hpp"
 
 class Ball : public sf::Sprite
 {
@@ -20,4 +21,5 @@ public :
     void move(float dtTime);
     void reverseDirection();
     sf::Vector2f getDirection();
+    ~Ball();
 };

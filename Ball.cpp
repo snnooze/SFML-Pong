@@ -48,6 +48,10 @@ void Ball::startMove()
         this->m_ballDirection= {-direction1, -direction2};
     }
 
+    MyHelpers mh;
+
+    this->m_ballDirection = mh.normalize(this->m_ballDirection);
+
 
 }
 
@@ -80,3 +84,5 @@ sf::Vector2f Ball::getDirection()
 {
     return this->m_ballDirection;
 }
+
+Ball::~Ball() = default;

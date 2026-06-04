@@ -42,3 +42,5 @@ void PauseScreen::draw()
     this->m_stateText.setPosition(sf::Vector2f(this->m_parent->getSize().x/2.f-this->m_stateText.getLocalBounds().size.x , 15+30+184));
      this->m_parent->draw(this->m_stateText);
 }
+
+PauseScreen::~PauseScreen() = default;

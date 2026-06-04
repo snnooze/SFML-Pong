@@ -2,9 +2,10 @@
 
 #include <iostream>
 
-Paddle::Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddle) : Sprite(*textures[4])
+Paddle::Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddle, bool isAI) : Sprite(*textures[4])
 {
     this->m_parent = &par;
+    this->m_isAI = isAI;
 
     //Get the textures loaded at the game launch
     for(int i = 0; i<=4; i++)
@@ -32,6 +33,8 @@ Paddle::Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddl
 }
 
 void Paddle::update(float deltaTime) {
+
+    //Borne pour empecher le paddle de sortir de sa zone de jeu
     if (this->getGlobalBounds().getCenter().y <= 0 || this->getGlobalBounds().position.y >= this->m_parent->getSize().y - this->getLocalBounds().getCenter().y) {
         if (this->getGlobalBounds().getCenter().y <= 0) {
             this->setPosition({this->getPosition().x, 0.5f});
@@ -42,3 +45,9 @@ void Paddle::update(float deltaTime) {
         }
     }
 }
+
+bool Paddle::isAI() {
+    return this->m_isAI;
+}
+
+Paddle::~Paddle() =default;

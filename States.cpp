@@ -2,7 +2,7 @@
 
 States::States()
 {
-    
+
 }
 
 void States::pause()
@@ -28,7 +28,7 @@ void States::mainMenu()
     if(this->currentGameState.m_isMainMenu)
     {
         this->currentGameState.m_isPaused = false;
-        this->currentGameState.m_isInGame = true;
+        this->currentGameState.m_isInGame = false;
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = false;
     }

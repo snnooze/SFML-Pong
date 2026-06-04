@@ -38,4 +38,5 @@ class MainMenuScreen : public sf::View
         void update(float dt = 0.f);
         sf::Sprite getSprite();
         void draw();
+        ~MainMenuScreen();
 };

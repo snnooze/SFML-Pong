@@ -3,19 +3,16 @@
 
 Button::Button(sf::Texture *textures, sf::IntRect size) : sf::Sprite(*textures, size)
 {
-
+    this->setTexture(textures[1]);
 }
 
 void Button::initialize(sf::Texture *textures)
 {
-    this->setTexture(textures[1]);
+
 }
 
 void Button::update()
 {
-
-    
-
 }
 
 void Button::setHover()
@@ -30,3 +27,5 @@ void Button::setHover()
         this->setTextureRect(sf::IntRect(sf::Vector2(0, this->m_position*64), sf::Vector2(sf::Vector2(150, 64))));
     }
 }
+
+Button::~Button() = default;

@@ -156,7 +156,10 @@ void Engine::inputs()
             //La touche Escape fait pasculer en mode Main menu
             if((event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Escape))
             {
-                this->m_GameState.mainMenu();
+                if (this->m_GameState.currentGameState.m_isInGame) {
+                    this->m_game.reset();
+                    this->m_GameState.mainMenu();
+                }
             }
 
             //TODO : Passage en full screen
@@ -316,3 +319,5 @@ void Engine::draw()
     this->m_window.display();
 
 }
+
+Engine::~Engine() = default;

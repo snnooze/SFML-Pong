@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Paddle.hpp"
 #include "Ball.hpp"
+#include "MyHelpers.hpp"
 
 class Game : public sf::View
 {
@@ -11,12 +12,12 @@ private :
     int m_parentWidth = 0;
     int m_parentHeight = 0;
     int m_mode2Players = false;
-    Paddle m_paddleLeft = Paddle(*this->m_parent, this->m_textures, true);
-    Paddle m_paddleRight = Paddle(*this->m_parent, this->m_textures, false);
+    Paddle m_paddleLeft = Paddle(*this->m_parent, this->m_textures, true, true);
+    Paddle m_paddleRight = Paddle(*this->m_parent, this->m_textures, false, false);
     Ball m_ball = Ball(*this->m_parent, this->m_textures);
     int m_scorePlayer1 = 0;
     int m_scorePlayer2 = 0;
-    int m_ballSpeed = 10;
+    int m_ballSpeed = 120;
     sf::Vector2f m_angle = {0, 0};
     sf::Texture *m_textures[5];
     bool m_isActive = false;
@@ -33,7 +34,7 @@ public :
     void movePlayer1Up();
     void movePlayer1Down();
     void stopPlayer1();
-    //~Game();
+    ~Game();
 
 };
 
