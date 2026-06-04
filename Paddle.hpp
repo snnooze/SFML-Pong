@@ -14,6 +14,6 @@ private :
 public :
     Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddle);
     void inputs();
-    void update();
+    void update(float deltaTime);
     void draw();
 };

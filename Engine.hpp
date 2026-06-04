@@ -31,6 +31,7 @@ class Engine
         sf::Music m_mainMenuMusic;
         bool m_musciPlay = false;
         sf::Image icone;
+        Text pause = Text(this->m_Font, "Pause", 30);
     public : 
         Engine();
         void loop();

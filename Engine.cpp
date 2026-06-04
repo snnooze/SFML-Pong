@@ -134,6 +134,25 @@ void Engine::inputs()
                 this->m_GameState.pause();
             }
 
+            if((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Space))
+            {
+                this->m_game.start();
+            }
+
+            if((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Up || event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Down))
+            {
+                this->m_game.stopPlayer1();
+            }
+
+            if ((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyPressed>() && event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up)) {
+                this->m_game.movePlayer1Up();
+            }
+
+            if ((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyPressed>() && event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down))
+            {
+                this->m_game.movePlayer1Down();
+            }
+
             //La touche Escape fait pasculer en mode Main menu
             if((event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Escape))
             {
@@ -231,7 +250,9 @@ void Engine::update()
     if(this->m_GameState.currentGameState.m_isPaused)
     {
         //Ne fait rien sur le jeu c'est en pause
-        this->m_PS.update(deltaTime);
+        //this->m_PS.update(deltaTime)
+        this->pause.setOrigin(this->pause.getLocalBounds().getCenter());
+        this->pause.setPosition({this->m_windowWidth/2.f,this->m_windowHeight/2.f});
         if(this->m_musciPlay)
         {
             this->m_mainMenuMusic.stop();
@@ -245,12 +266,11 @@ void Engine::update()
     }
     if(m_GameState.currentGameState.m_isInGame) {
         //Met à jour le jeu
-        if(this->m_musciPlay)
-        {
+        if(this->m_musciPlay) {
             this->m_mainMenuMusic.stop();
             this->m_musciPlay = false;
         }
-        this->m_game.setSize({(float)this->m_windowWidth, (float)this->m_windowHeight});
+        this->m_game.update(deltaTime);
     }
     if(m_GameState.currentGameState.m_isMainMenu)
     {
@@ -272,8 +292,10 @@ void Engine::draw()
     if(m_GameState.currentGameState.m_isPaused)
     {
         //Ne fait rien sur le jeu c'est en pause
-       this->m_window.setView(this->m_PS); 
-       this->m_PS.draw();
+       //this->m_PS.draw();
+        this->m_game.draw();
+        this->m_window.draw(pause);
+
     }
     if(m_GameState.currentGameState.m_isGameOver)
     {
@@ -282,14 +304,12 @@ void Engine::draw()
     if(m_GameState.currentGameState.m_isInGame)
     {
         //Met à jour le jeu
-        this->m_window.setView(this->m_game);
         this->m_game.draw();
 
     }
     if(m_GameState.currentGameState.m_isMainMenu)
     {
         //Met en pause le jeu et affiche le menu principal
-        this->m_window.setView(this->m_viewMMS);
         this->m_viewMMS.draw();
     }
 

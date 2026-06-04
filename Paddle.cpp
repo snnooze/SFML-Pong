@@ -1,5 +1,7 @@
 #include "Paddle.hpp"
 
+#include <iostream>
+
 Paddle::Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddle) : Sprite(*textures[4])
 {
     this->m_parent = &par;
@@ -27,4 +29,16 @@ Paddle::Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddl
     }
     sf::IntRect rect = {{0, 0},{40,99},};
     this->setTextureRect(rect);
+}
+
+void Paddle::update(float deltaTime) {
+    if (this->getGlobalBounds().getCenter().y <= 0 || this->getGlobalBounds().position.y >= this->m_parent->getSize().y - this->getLocalBounds().getCenter().y) {
+        if (this->getGlobalBounds().getCenter().y <= 0) {
+            this->setPosition({this->getPosition().x, 0.5f});
+            //std::cout << "Paddle : " << this->getPosition().x << " " << this->getPosition().y << std::endl;
+        }
+        else {
+            this->setPosition({this->getPosition().x, this->m_parent->getSize().y+1.f});
+        }
+    }
 }
