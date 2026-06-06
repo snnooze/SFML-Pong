@@ -1,11 +1,11 @@
 #include "Paddle.hpp"
+#include "MyHelpers.hpp"
 
 #include <iostream>
 
-Paddle::Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddle, bool isAI) : Sprite(*textures[4])
+Paddle::Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddle) : Sprite(*textures[4])
 {
     this->m_parent = &par;
-    this->m_isAI = isAI;
 
     //Get the textures loaded at the game launch
     for(int i = 0; i<=4; i++)
@@ -37,7 +37,7 @@ void Paddle::update(float deltaTime) {
     //Borne pour empecher le paddle de sortir de sa zone de jeu
     if (this->getGlobalBounds().getCenter().y <= 0 || this->getGlobalBounds().position.y >= this->m_parent->getSize().y - this->getLocalBounds().getCenter().y) {
         if (this->getGlobalBounds().getCenter().y <= 0) {
-            this->setPosition({this->getPosition().x, 0.5f});
+            this->setPosition({this->getPosition().x, -0.5f});
             //std::cout << "Paddle : " << this->getPosition().x << " " << this->getPosition().y << std::endl;
         }
         else {
@@ -46,8 +46,15 @@ void Paddle::update(float deltaTime) {
     }
 }
 
-bool Paddle::isAI() {
-    return this->m_isAI;
+void Paddle::move(int direction, float dtTime) {
+
+    MyHelpers mh;
+    //sf::Vector2f pdl = {this->getGlobalBounds().position.x, this->getGlobalBounds().position.y + (250 * dtTime )* direction};
+
+    float pdl = this->getPosition().y + 250 * dtTime * direction;
+
+    this->setPosition({this->getPosition().x, pdl});
+
 }
 
 Paddle::~Paddle() =default;

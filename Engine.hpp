@@ -27,9 +27,11 @@ class Engine
         PauseScreen m_PS = PauseScreen(this->m_window);
         //MainMenuScreen m_MMS;
         MainMenuScreen m_viewMMS = MainMenuScreen(this->m_window, this->m_textures, this->m_Font);
-        Game m_game = Game(this->m_window, this->m_textures, this->m_Font);
+        Game m_game = Game(this->m_window, this->m_textures, this->m_Font, false);
         sf::Music m_mainMenuMusic;
         bool m_musciPlay = false;
+        bool m_player1Pressed = false;
+        bool m_player2Pressed = false;
         sf::Image icone;
         Text pause = Text(this->m_Font, "Pause", 30);
     public : 

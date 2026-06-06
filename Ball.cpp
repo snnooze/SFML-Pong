@@ -35,6 +35,10 @@ void Ball::startMove()
 
     std::cout << direction1 << "." << direction2 << "\n";
 
+    if (direction2 < 0.3) {
+        direction2 = 0.35;
+    }
+
     std::uniform_real_distribution<float> distrib2(-1.0, 1.0);
 
     float direction3 = distrib2(gen);
@@ -49,6 +53,8 @@ void Ball::startMove()
     }
 
     MyHelpers mh;
+
+
 
     this->m_ballDirection = mh.normalize(this->m_ballDirection);
 

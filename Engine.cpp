@@ -22,6 +22,7 @@ Engine::Engine()
 
                 this->m_PS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
                 this->m_PS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
+
             }
             else
             {
@@ -45,6 +46,7 @@ Engine::Engine()
     //TODO : Regarder ou placer et charger tous les sprites, début ?
    
 
+    this->m_window.setKeyRepeatEnabled(false);
     //this->m_MMS.initialize(this->m_window);   //Initialisation du menu principal
 
 }
@@ -139,21 +141,52 @@ void Engine::inputs()
                 this->m_game.start();
             }
 
+            //Touches pour Player 1;
             if((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Up || event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Down))
             {
                 this->m_game.stopPlayer1();
+                this->m_player1Pressed = false;
             }
 
             if ((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyPressed>() && event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Up)) {
-                this->m_game.movePlayer1Up();
+                if (!this->m_player1Pressed) {
+                    this->m_game.movePlayer1Up();
+                    this->m_player1Pressed = true;
+                }
             }
 
             if ((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyPressed>() && event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Down))
             {
-                this->m_game.movePlayer1Down();
+                if (!this->m_player1Pressed) {
+                    this->m_game.movePlayer1Down();
+                    this->m_player1Pressed = true;
+                }
             }
 
-            //La touche Escape fait pasculer en mode Main menu
+            //Touches pour Player 2
+            if((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Z || event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::S))
+            {
+                this->m_game.stopPlayer2();
+                this->m_player2Pressed = false;
+            }
+
+            if ((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyPressed>() && event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Z)) {
+                if (!this->m_player2Pressed) {
+                    this->m_game.movePlayer2Up();
+                    this->m_player2Pressed = true;
+                }
+
+            }
+
+            if ((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyPressed>() && event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::S))
+            {
+                if (!this->m_player2Pressed) {
+                    this->m_game.movePlayer2Down();
+                    this->m_player2Pressed = true;
+                }
+            }
+
+            //La touche Escape fait basculer en mode Main menu
             if((event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Escape))
             {
                 if (this->m_GameState.currentGameState.m_isInGame) {
@@ -218,10 +251,14 @@ void Engine::inputs()
                     {
                         case 1 :
                             //Lance une partie à 1 joueur
+                            this->m_game.set1PlayersMode();
                             this->m_GameState.game();
                             break;
                         case 2 :
                             //Lance une partie à 2 joueurs
+                            this->m_game.set2PlayersMode();
+                            this->m_GameState.game();
+                            break;
                             break;
                         case 3 :
                             //Affiche les settings
