@@ -207,7 +207,11 @@ void Game::reset() {
     this->m_isActive = false;
     this->m_paddleRight.setPosition({this->m_parent->getSize().x - 50.f, this->m_parent->getSize().y/2.f});
     this->m_ball.setPosition({(float)this->m_parent->getSize().x/2,(float)this->m_parent->getSize().y/2});
-    this->m_paddleLeft.setPosition({50.f, this->m_parent->getSize().y/2.f});
+    this->m_paddleLeft.setPosition({50.f, (float)this->m_parent->getSize().y/2.f});
+    this->movePlayer1 = 0;
+    this->movePlayer2 = 0;
+    this->stopPlayer1();
+    this->stopPlayer2();
 }
 
 void Game::movePlayer2Up()
@@ -230,6 +234,14 @@ void Game::stopPlayer2() {
     if (this->m_isActive && this->m_is2PlayersMode) {
         this->movePlayer2 = 0;
     }
+}
+
+void Game::resetScore() {
+    this->m_scorePlayer1 = 0;
+    this->m_scorePlayer2 = 0;
+
+    this->m_scorePlayer1Lbl.setString(std::to_string(this->m_scorePlayer1));
+    this->m_scorePlayer2Lbl.setString(std::to_string(this->m_scorePlayer2));
 }
 
 Game::~Game() = default;

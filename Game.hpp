@@ -42,6 +42,7 @@ public :
     void stopPlayer2();
     void set2PlayersMode();
     void set1PlayersMode();
+    void resetScore();
     ~Game();
 
 };

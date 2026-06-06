@@ -252,11 +252,13 @@ void Engine::inputs()
                         case 1 :
                             //Lance une partie à 1 joueur
                             this->m_game.set1PlayersMode();
+                            this->m_game.resetScore();
                             this->m_GameState.game();
                             break;
                         case 2 :
                             //Lance une partie à 2 joueurs
                             this->m_game.set2PlayersMode();
+                            this->m_game.resetScore();
                             this->m_GameState.game();
                             break;
                             break;
