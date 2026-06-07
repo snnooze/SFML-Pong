@@ -2,8 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include "Paddle.hpp"
 #include "Ball.hpp"
-#include "MyHelpers.hpp"
-#include <SFML/Audio.hpp>
 
 class Game : public sf::View
 {
@@ -27,6 +25,7 @@ private :
     bool m_is2PlayersMode;
     int movePlayer1 = 0;
     int movePlayer2 = 0;
+    bool m_isFirstPlayerTurn = true;
 public :
     Game(sf::RenderWindow &par, sf::Texture textures[5], const sf::Font &font, bool is2PlayersMode);
     void start();

@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include "MyHelpers.hpp"
 
 class Ball : public sf::Sprite
 {
@@ -20,7 +19,7 @@ public :
     void inputs();
     void update(float dtTime);
     void draw();
-    void startMove();
+    void startMove(bool is_FirstPlayerTurn);
     void move(float dtTime);
     void reverseDirection();
     sf::Vector2f getDirection();

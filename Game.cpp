@@ -60,7 +60,7 @@ void Game::start()
     if (!this->m_isActive) {
         this->reset();
         this->m_isActive = true;
-        this->m_ball.startMove();
+        this->m_ball.startMove(this->m_isFirstPlayerTurn);
     }
     //Reset
     //this->m_ball.setPosition({(float)this->m_parent->getSize().x/2,(float)this->m_parent->getSize().y/2});
@@ -97,10 +97,12 @@ void Game::update(float dtTime)
             if (this->m_ball.getGlobalBounds().position.x >= this->m_parent->getSize().x-25) {
                 this->m_scorePlayer2+=1;
                 this->m_scorePlayer2Lbl.setString(std::to_string(m_scorePlayer2));
+                this->m_isFirstPlayerTurn = true;
             }
             else {
                 this->m_scorePlayer1+=1;
                 this->m_scorePlayer1Lbl.setString(std::to_string(m_scorePlayer1));
+                this->m_isFirstPlayerTurn = false;
             }
 
 
@@ -109,9 +111,6 @@ void Game::update(float dtTime)
         }
 
         this->m_ball.update(dtTime);
-
-
-        MyHelpers mh;
 
         if (this->m_is2PlayersMode) {
 

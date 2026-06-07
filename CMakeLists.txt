@@ -32,8 +32,7 @@ add_executable(SFML_Pong main.cpp Engine.cpp Button.cpp MainMenuScreen.cpp Pause
         Paddle.hpp
         Ball.cpp
         Ball.hpp
-        MyHelpers.cpp
-        MyHelpers.hpp)
+)
 target_compile_features(SFML_Pong PRIVATE cxx_std_17)
 
 target_link_libraries(SFML_Pong PRIVATE SFML::Graphics SFML::Audio FLAC::FLAC Vorbis::vorbis Vorbis::vorbisenc Vorbis::vorbis Ogg::ogg)

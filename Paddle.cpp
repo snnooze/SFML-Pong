@@ -1,5 +1,4 @@
 #include "Paddle.hpp"
-#include "MyHelpers.hpp"
 
 #include <iostream>
 
@@ -47,8 +46,6 @@ void Paddle::update(float deltaTime) {
 }
 
 void Paddle::move(int direction, float dtTime) {
-
-    MyHelpers mh;
     //sf::Vector2f pdl = {this->getGlobalBounds().position.x, this->getGlobalBounds().position.y + (250 * dtTime )* direction};
 
     float pdl = this->getPosition().y + 250 * dtTime * direction;

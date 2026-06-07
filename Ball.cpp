@@ -23,43 +23,28 @@ Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[5]) : Sprite(*textures[4
     }
 }
 
-void Ball::startMove()
+void Ball::startMove(bool is_FirstPlayerTurn = true)
 {
      std::random_device rd;
      std::mt19937 gen(rd());
-     std::uniform_real_distribution<float> distrib(0.0, 1.0);
+     std::uniform_real_distribution<float> distrib(0.4, 1.0);
     //
     float direction1 = distrib(gen);
     //
     float direction2 = distrib(gen);
 
-    //srand(time(NULL));
-    //float direction1 = rand()%(0 0 + 1);
-
     std::cout << direction1 << "." << direction2 << "\n";
 
-    if (direction2 < 0.3) {
-        direction2 = 0.35;
-    }
-
-    std::uniform_real_distribution<float> distrib2(-1.0, 1.0);
-
-    float direction3 = distrib2(gen);
-
-    if (direction3 > 0)
+    if (is_FirstPlayerTurn)
     {
         this->m_ballDirection= {direction1, direction2};
     }
     else
     {
-        this->m_ballDirection= {-direction1, -direction2};
+        this->m_ballDirection= {-direction1, direction2};
     }
 
-    MyHelpers mh;
-
-
-
-    this->m_ballDirection = mh.normalize(this->m_ballDirection);
+    this->m_ballDirection = this->m_ballDirection.normalized();
 
 
 }

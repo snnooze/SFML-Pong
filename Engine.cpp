@@ -14,7 +14,7 @@ Engine::Engine()
 
                 this->m_window.setVerticalSyncEnabled(true);
 
-                //this->m_window.setFramerateLimit(60);
+                this->m_window.setFramerateLimit(60);
 
                 this->m_viewMMS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
                 this->m_viewMMS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
