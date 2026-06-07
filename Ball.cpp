@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <random>
-#include <time.h>
 
 Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[5]) : Sprite(*textures[4])
 {
@@ -18,6 +17,10 @@ Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[5]) : Sprite(*textures[4
 
     sf::IntRect rect = {{0, 0},{25,25},};
     this->setTextureRect(rect);
+
+    if (!this->m_buffer.loadFromFile("Assets/Sounds/rebond_SFX.ogg")) {
+        std::cout << "Failed to load sound! \n";
+    }
 }
 
 void Ball::startMove()
@@ -83,7 +86,19 @@ void Ball::move(float delta)
 }
 
 void Ball::reverseDirection() {
+    this->setPosition({this->getPosition().x + 0.5f, this->getPosition().y});
     this->m_ballDirection.x = -this->m_ballDirection.x;
+
+
+
+         if(this->m_rebond.getStatus() == sf::SoundSource::Status::Stopped) {
+
+            this->m_rebond.setBuffer(this->m_buffer);
+            this->m_rebond.play();
+
+        }
+
+
 }
 
 sf::Vector2f Ball::getDirection()

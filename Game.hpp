@@ -3,6 +3,7 @@
 #include "Paddle.hpp"
 #include "Ball.hpp"
 #include "MyHelpers.hpp"
+#include <SFML/Audio.hpp>
 
 class Game : public sf::View
 {

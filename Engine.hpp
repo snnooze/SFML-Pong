@@ -34,6 +34,7 @@ class Engine
         bool m_player2Pressed = false;
         sf::Image icone;
         Text pause = Text(this->m_Font, "Pause", 30);
+        //sf::Sound sound = sf::Sound(this->buffer);
     public : 
         Engine();
         void loop();

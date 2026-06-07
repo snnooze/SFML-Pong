@@ -52,12 +52,11 @@ Game::Game(sf::RenderWindow &par, sf::Texture textures[5], const sf::Font &font,
 
     this->m_scorePlayer1Lbl.setOutlineColor(sf::Color::Black);
     this->m_scorePlayer2Lbl.setOutlineColor(sf::Color::Black);
-
-
 }
 
 void Game::start()
 {
+
     if (!this->m_isActive) {
         this->reset();
         this->m_isActive = true;
@@ -88,6 +87,7 @@ void Game::update(float dtTime)
     {
     //Gestion du heurt de la balle sur les Paddles
         if (this->m_ball.getGlobalBounds().findIntersection(this->m_paddleRight.getGlobalBounds()) || this->m_ball.getGlobalBounds().findIntersection(this->m_paddleLeft.getGlobalBounds())) {
+
             this->m_ball.reverseDirection();
         }
         //Gestion de sortie de balle sur la gauche et droite et remise de la balle au centre

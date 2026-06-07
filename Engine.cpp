@@ -138,6 +138,7 @@ void Engine::inputs()
 
             if((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Space))
             {
+
                 this->m_game.start();
             }
 
@@ -312,6 +313,7 @@ void Engine::update()
             this->m_mainMenuMusic.stop();
             this->m_musciPlay = false;
         }
+
         this->m_game.update(deltaTime);
     }
     if(m_GameState.currentGameState.m_isMainMenu)
