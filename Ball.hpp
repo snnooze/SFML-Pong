@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <iostream>
+#include <random>
 
 class Ball : public sf::Sprite
 {
@@ -12,8 +14,9 @@ private :
     float m_speed = 500;
     sf::Texture *m_textures[5];
     sf::Vector2f m_ballDirection = {0,0};
-    sf::SoundBuffer m_buffer;
-    sf::Sound m_rebond = sf::Sound(this->m_buffer);
+    //Cause a crash, looking for a solution...
+    // sf::SoundBuffer m_buffer = sf::SoundBuffer("Assets/Sounds/rebond_SFX.ogg");
+    // sf::Sound m_rebond = sf::Sound(this->m_buffer);
 public :
     Ball(sf::RenderWindow &par, sf::Texture *textures[5]);
     void inputs();

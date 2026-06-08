@@ -1,8 +1,5 @@
 #include "Ball.hpp"
 
-#include <iostream>
-#include <random>
-
 Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[5]) : Sprite(*textures[4])
 {
     this->m_parent = &par;
@@ -17,10 +14,6 @@ Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[5]) : Sprite(*textures[4
 
     sf::IntRect rect = {{0, 0},{25,25},};
     this->setTextureRect(rect);
-
-    if (!this->m_buffer.loadFromFile("Assets/Sounds/rebond_SFX.ogg")) {
-        std::cout << "Failed to load sound! \n";
-    }
 }
 
 void Ball::startMove(bool is_FirstPlayerTurn = true)
@@ -74,14 +67,29 @@ void Ball::reverseDirection() {
     this->setPosition({this->getPosition().x + 0.5f, this->getPosition().y});
     this->m_ballDirection.x = -this->m_ballDirection.x;
 
+        //Need to be initialized elsewhere
+        sf::SoundBuffer buffer;
+        sf::Sound rebond = sf::Sound(buffer);
 
+    if (buffer.loadFromFile("Assets/sounds/rebond_SFX.ogg")) {
 
-         if(this->m_rebond.getStatus() == sf::SoundSource::Status::Stopped) {
+        if(rebond.getStatus() == sf::SoundSource::Status::Stopped && rebond.getStatus() != sf::SoundSource::Status::Playing) {
+            rebond.play();
+            sf::Clock timer;
+            //Whithout that delay whe don't hear the sound
+            while (rebond.getStatus() != sf::SoundSource::Status::Stopped) {
 
-            this->m_rebond.setBuffer(this->m_buffer);
-            this->m_rebond.play();
+            }
+            std::cout << "Play SFX" << "\n";
 
         }
+        else {
+            std::cout << "Error loading SFX" << "\n";
+        }
+
+    }
+
+
 
 
 }

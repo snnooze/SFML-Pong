@@ -13,13 +13,19 @@ I have chosen SFML 3.
 
 Actually the game is a WIP and there is the plan : 
 
--[ ] A game for 1 player
-- [ ] A 2 players mode on the same screen
+- [x] A game for 1 player
+- [x] A 2 players mode on the same screen
+- [ ] 2 playing types possibles 
 - [ ] A complete settings system
-- [ ] High Scores
+- [ ] High Scores for an "Endurance mode"
 
 Maybe
 - [ ] A online 2 players mode
 
+### Main menu screen
+![Main menu](img/Capture%20d%27%C3%A9cran%202026-06-08%20012516.png)
 
-![img.png](img/img.png)
+### In game screens
+![The match starts](img/Capture%20d%27%C3%A9cran%202026-06-08%20012537.png)
+
+![Pause screen](img/Capture%20d%27%C3%A9cran%202026-06-08%20012606.png)

@@ -25,7 +25,7 @@ FetchContent_MakeAvailable(SFML)
 
 #List files of the game
 
-add_executable(SFML_Pong main.cpp Engine.cpp Button.cpp MainMenuScreen.cpp PauseScreen.cpp States.cpp
+add_executable(SFML_Pong main.cpp Engine.cpp Engine.hpp Button.cpp Button.hpp MainMenuScreen.cpp MainMenuScreen.hpp PauseScreen.cpp PauseScreen.hpp States.cpp States.hpp
         Game.cpp
         Game.hpp
         Paddle.cpp
@@ -35,6 +35,6 @@ add_executable(SFML_Pong main.cpp Engine.cpp Button.cpp MainMenuScreen.cpp Pause
 )
 target_compile_features(SFML_Pong PRIVATE cxx_std_17)
 
-target_link_libraries(SFML_Pong PRIVATE SFML::Graphics SFML::Audio FLAC::FLAC Vorbis::vorbis Vorbis::vorbisenc Vorbis::vorbis Ogg::ogg)
+target_link_libraries(SFML_Pong PRIVATE SFML::Graphics SFML::Audio)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT SFML_Pong) #for Visual studio projects

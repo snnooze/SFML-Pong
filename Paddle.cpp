@@ -1,7 +1,5 @@
 #include "Paddle.hpp"
 
-#include <iostream>
-
 Paddle::Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddle) : Sprite(*textures[4])
 {
     this->m_parent = &par;
