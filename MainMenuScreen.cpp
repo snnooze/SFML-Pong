@@ -1,7 +1,7 @@
 #include <iostream>
 #include "MainMenuScreen.hpp"
 
-MainMenuScreen::MainMenuScreen(sf::RenderWindow &par, sf::Texture textures[2], const sf::Font &font) : sf::View()
+MainMenuScreen::MainMenuScreen(sf::RenderWindow &par, sf::Texture textures[2], const sf::Font &font)
 {        
     //Get the parent Window
     this->m_parent = &par;
@@ -60,6 +60,10 @@ MainMenuScreen::MainMenuScreen(sf::RenderWindow &par, sf::Texture textures[2], c
     this->m_exitLabelTxt = sf::Text(this->m_font, "Quit", 25);
     this->m_exitLabelTxt.setFillColor(sf::Color::White);
 
+    if (!Globals::g_bufferMenu.loadFromFile("Assets/Sounds/sfx_win.ogg")) {
+        std::cout << "Could not load sound effects ZAP !." << std::endl;
+    }
+
 }
 
 void MainMenuScreen::inputs()
@@ -69,6 +73,10 @@ void MainMenuScreen::inputs()
 
 void MainMenuScreen::update(float dt)
 {
+    if (this->m_previousPosition != this->m_menuPosition) {
+        this->emitSound();
+        this->m_previousPosition = this->m_menuPosition;
+    }
     //moving between the main menu button with the arrows of the keyboard switch they state
     switch (this->m_menuPosition)
     {
@@ -122,6 +130,11 @@ void MainMenuScreen::update(float dt)
     this->m_scoresButton.setHover();
     this->m_exitButton.setHover();
 
+}
+
+void MainMenuScreen::emitSound() {
+    this->m_sound.setBuffer(Globals::g_bufferMenu);
+    this->m_sound.play();
 }
 
 void MainMenuScreen::draw()

@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include <iostream>
 
-Game::Game(sf::RenderWindow &par, sf::Texture textures[5], const sf::Font &font, bool is_2PlayersMode) : sf::View() {
+Game::Game(sf::RenderWindow &par, sf::Texture textures[5], const sf::Font &font, bool is_2PlayersMode) {
     //Get the parent Window
     this->m_parent = &par;
 
@@ -62,10 +62,6 @@ void Game::start()
         this->m_isActive = true;
         this->m_ball.startMove(this->m_isFirstPlayerTurn);
     }
-    //Reset
-    //this->m_ball.setPosition({(float)this->m_parent->getSize().x/2,(float)this->m_parent->getSize().y/2});
-
-    //active la balle
 
 }
 

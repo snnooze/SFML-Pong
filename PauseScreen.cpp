@@ -1,7 +1,7 @@
 #include <iostream>
 #include "PauseScreen.hpp"
 
-PauseScreen::PauseScreen(RenderWindow &parent) : sf::View()
+PauseScreen::PauseScreen(RenderWindow &parent)
 {
     this->m_parent = &parent;
 

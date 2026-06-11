@@ -2,10 +2,11 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "globals.hpp"
 #include <iostream>
 #include <random>
 
-extern sf::SoundBuffer g_buffer;
+extern sf::SoundBuffer Globals::g_buffer;
 class Ball : public sf::Sprite
 {
 private :
@@ -16,10 +17,7 @@ private :
     float m_speed = 500;
     sf::Texture *m_textures[5];
     sf::Vector2f m_ballDirection = {0,0};
-    //Cause a crash, looking for a solution...
-    //const std::filesystem::path m_filepath = "Assets/sounds/rebond_SFX.ogg";
-
-    sf::Sound m_rebond = sf::Sound(g_buffer);
+    sf::Sound m_rebond = sf::Sound(Globals::g_buffer);
 public :
     Ball(sf::RenderWindow &par, sf::Texture *textures[5]);
     void inputs();

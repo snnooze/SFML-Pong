@@ -3,7 +3,7 @@
 
 using namespace sf;
 
-class PauseScreen : public View
+class PauseScreen
 {
 
     private :

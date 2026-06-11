@@ -15,12 +15,9 @@ Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[5]) : Sprite(*textures[4
     sf::IntRect rect = {{0, 0},{25,25},};
     this->setTextureRect(rect);
 
-    if (!g_buffer.loadFromFile("Assets/sounds/rebond_SFX.ogg")) {
+    if (!Globals::g_buffer.loadFromFile("Assets/sounds/rebond_SFX.ogg")) {
          std::cout<<"Error loading SFX"<<std::endl;
     }
-    // else {
-    //     this->m_rebond.setBuffer(this->m_buffer);
-    // }
 }
 
 void Ball::startMove(bool is_FirstPlayerTurn = true)
@@ -74,11 +71,8 @@ void Ball::reverseDirection() {
     this->setPosition({this->getPosition().x + 0.5f, this->getPosition().y});
     this->m_ballDirection.x = -this->m_ballDirection.x;
 
-        //Need to be initialized elsewhere
-        //this->m_rebond.setBuffer(g_buffer);
-
         if(this->m_rebond.getStatus() != sf::SoundSource::Status::Playing) {
-             this->m_rebond.setBuffer(g_buffer);
+             this->m_rebond.setBuffer(Globals::g_buffer);
              this->m_rebond.play();
              std::cout << "Play SFX" << "\n";
          }

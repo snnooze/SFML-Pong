@@ -3,7 +3,7 @@
 #include "Paddle.hpp"
 #include "Ball.hpp"
 
-class Game : public sf::View
+class Game
 {
 private :
     sf::Font m_font;

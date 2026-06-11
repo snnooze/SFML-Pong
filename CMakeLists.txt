@@ -32,6 +32,7 @@ add_executable(SFML_Pong main.cpp Engine.cpp Engine.hpp Button.cpp Button.hpp Ma
         Paddle.hpp
         Ball.cpp
         Ball.hpp
+        globals.hpp
         globals.cpp
 )
 target_compile_features(SFML_Pong PRIVATE cxx_std_17)
