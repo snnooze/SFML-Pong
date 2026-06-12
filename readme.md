@@ -29,3 +29,7 @@ Maybe
 ![The match starts](img/Capture%20d%27%C3%A9cran%202026-06-08%20012537.png)
 
 ![Pause screen](img/Capture%20d%27%C3%A9cran%202026-06-08%20012606.png)
+
+### Quick preview
+
+![sharpong.gif](img/sharpong.gif)
