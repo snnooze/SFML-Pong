@@ -81,10 +81,10 @@ void Ball::reverseDirection() {
     //this->setPosition({this->getPosition().x + 0.5f, this->getPosition().y});
 
     if (this->getPosition().x > this->m_parent->getSize().x/2.0) {
-        this->setPosition({this->getPosition().x - 1.0f, this->getPosition().y});
+        this->setPosition({this->getPosition().x - 2.0f, this->getPosition().y});
     }
     else {
-        this->setPosition({this->getPosition().x + 1.0f, this->getPosition().y});
+        this->setPosition({this->getPosition().x + 2.0f, this->getPosition().y});
     }
 
     this->m_ballDirection.x = -this->m_ballDirection.x;

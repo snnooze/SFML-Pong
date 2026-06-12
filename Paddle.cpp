@@ -46,7 +46,9 @@ void Paddle::update(float deltaTime) {
 void Paddle::move(int direction, float dtTime) {
     //sf::Vector2f pdl = {this->getGlobalBounds().position.x, this->getGlobalBounds().position.y + (250 * dtTime )* direction};
 
-    float pdl = this->getPosition().y + 250 * dtTime * direction;
+    sf::Vector2f directionPaddle = {0.01, (float)direction};
+
+    float pdl = this->getPosition().y + 250 * dtTime * directionPaddle.normalized().y;
 
     this->setPosition({this->getPosition().x, pdl});
 
