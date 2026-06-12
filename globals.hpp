@@ -4,4 +4,5 @@
 namespace Globals {
     extern sf::SoundBuffer g_buffer;
     extern sf::SoundBuffer g_bufferMenu;
+    extern sf::SoundBuffer g_bufferOut;
 };

@@ -7,6 +7,7 @@
 #include <random>
 
 extern sf::SoundBuffer Globals::g_buffer;
+extern sf::SoundBuffer Globals::g_bufferOut;
 class Ball : public sf::Sprite
 {
 private :
@@ -18,6 +19,7 @@ private :
     sf::Texture *m_textures[5];
     sf::Vector2f m_ballDirection = {0,0};
     sf::Sound m_rebond = sf::Sound(Globals::g_buffer);
+    sf::Sound m_out = sf::Sound(Globals::g_bufferOut);
 public :
     Ball(sf::RenderWindow &par, sf::Texture *textures[5]);
     void inputs();
@@ -27,5 +29,6 @@ public :
     void move(float dtTime);
     void reverseDirection();
     sf::Vector2f getDirection();
+    void emitOutSound();
     ~Ball();
 };

@@ -18,6 +18,10 @@ Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[5]) : Sprite(*textures[4
     if (!Globals::g_buffer.loadFromFile("Assets/sounds/rebond_SFX.ogg")) {
          std::cout<<"Error loading SFX"<<std::endl;
     }
+
+    if (!Globals::g_bufferOut.loadFromFile("Assets/sounds/sfx_lose.ogg")) {
+        std::cout<<"Error loading SFX lose ! "<<std::endl;
+    }
 }
 
 void Ball::startMove(bool is_FirstPlayerTurn = true)
@@ -28,7 +32,13 @@ void Ball::startMove(bool is_FirstPlayerTurn = true)
     //
     float direction1 = distrib(gen);
     //
-    float direction2 = distrib(gen);
+    std::uniform_real_distribution<float> distrib2(-1.0, 1.0);
+
+    float direction2 = distrib2(gen);
+
+    while ( direction2 == 0.0 ) {
+        direction2 = distrib2(gen);
+    }
 
     std::cout << direction1 << "." << direction2 << "\n";
 
@@ -68,7 +78,15 @@ void Ball::move(float delta)
 }
 
 void Ball::reverseDirection() {
-    this->setPosition({this->getPosition().x + 0.5f, this->getPosition().y});
+    //this->setPosition({this->getPosition().x + 0.5f, this->getPosition().y});
+
+    if (this->getPosition().x > this->m_parent->getSize().x/2.0) {
+        this->setPosition({this->getPosition().x - 1.0f, this->getPosition().y});
+    }
+    else {
+        this->setPosition({this->getPosition().x + 1.0f, this->getPosition().y});
+    }
+
     this->m_ballDirection.x = -this->m_ballDirection.x;
 
         if(this->m_rebond.getStatus() != sf::SoundSource::Status::Playing) {
@@ -77,6 +95,11 @@ void Ball::reverseDirection() {
              std::cout << "Play SFX" << "\n";
          }
 
+}
+
+void Ball::emitOutSound() {
+    m_out.setBuffer(Globals::g_bufferOut);
+    m_out.play();
 }
 
 sf::Vector2f Ball::getDirection()

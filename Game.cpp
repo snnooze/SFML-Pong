@@ -89,6 +89,7 @@ void Game::update(float dtTime)
         //Gestion de sortie de balle sur la gauche et droite et remise de la balle au centre
         if (this->m_ball.getGlobalBounds().position.x >= this->m_parent->getSize().x-25 || this->m_ball.getGlobalBounds().position.x <= 0)
         {
+            this->m_ball.emitOutSound();
             //Notation des scores
             if (this->m_ball.getGlobalBounds().position.x >= this->m_parent->getSize().x-25) {
                 this->m_scorePlayer2+=1;
