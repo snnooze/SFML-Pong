@@ -10,7 +10,7 @@ class Button : public Sprite
     Texture *m_texture[2];
     Font m_font;
     public:
-    Button(sf::Texture *text, sf::IntRect size);
+    Button(sf::Texture *text, sf::IntRect size, bool isSmallButton = false);
     Text m_labelTxt = Text(m_font, "1 Player");
     void initialize(sf::Texture *textures);
     void update();

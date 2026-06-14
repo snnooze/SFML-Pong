@@ -5,6 +5,7 @@
 #include "States.hpp"
 #include "PauseScreen.hpp"
 #include "MainMenuScreen.hpp"
+#include "SettingsScreen.hpp"
 #include "Game.hpp"
 
 using namespace sf;
@@ -19,14 +20,14 @@ class Engine
         bool texturesLoader();
         Font m_Font;
         Texture m_Logo;
-        Texture m_textures[5];
+        Texture m_textures[6];
         const String m_GameName = "#Pong";
         Clock m_clock;
         Time m_dt;
         States m_GameState;
         PauseScreen m_PS = PauseScreen(this->m_window);
-        //MainMenuScreen m_MMS;
         MainMenuScreen m_viewMMS = MainMenuScreen(this->m_window, this->m_textures, this->m_Font);
+        SettingsScreen m_configMenuScreen = SettingsScreen(this->m_window, this->m_textures, this->m_Font);
         Game m_game = Game(this->m_window, this->m_textures, this->m_Font, false);
         Music m_mainMenuMusic;
         bool m_musciPlay = false;

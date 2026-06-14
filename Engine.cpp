@@ -11,12 +11,10 @@ Engine::Engine()
             {
                     this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
 
+                    //Limit the Framerate
                     this->m_window.setVerticalSyncEnabled(true);
 
                     this->m_window.setFramerateLimit(60);
-
-                    // this->m_PS.setSize(Vector2f(this->m_windowWidth, this->m_windowHeight));
-                    // this->m_PS.setCenter(Vector2f(this->m_windowWidth/2.f, this->m_windowHeight/2.f));
 
             }
             else
@@ -42,7 +40,6 @@ Engine::Engine()
    
 
     this->m_window.setKeyRepeatEnabled(false);
-    //this->m_MMS.initialize(this->m_window);   //Initialisation du menu principal
 
 }
 
@@ -81,6 +78,12 @@ bool Engine::texturesLoader()
     if(!this->m_textures[4].loadFromFile("Assets/Graphics/paddle.png"))
     {
         std::cout << "Paddle loading Failed";
+        return false;
+    }
+
+    if(!this->m_textures[5].loadFromFile("Assets/Graphics/setting_buttons.png"))
+    {
+        std::cout << "Setting button loading Failed";
         return false;
     }
 
@@ -189,6 +192,10 @@ void Engine::inputs()
                     this->m_game.reset();
                     this->m_GameState.mainMenu();
                 }
+                if (this->m_GameState.currentGameState.m_isConfigMenu) {
+                    this->m_game.reset();
+                    this->m_GameState.mainMenu();
+                }
             }
 
             //TODO : Passage en full screen
@@ -227,7 +234,7 @@ void Engine::inputs()
                     // }
 
                     this->m_viewMMS.m_menuPosition+=1;
-                    std::cout<< "Main menu +1 \n";
+                    std::cout<< "Main menu +1 ->  "<<this->m_viewMMS.m_menuPosition << "\n";
                     if(this->m_viewMMS.m_menuPosition>5)
                     {
                         this->m_viewMMS.m_menuPosition=1;
@@ -268,6 +275,8 @@ void Engine::inputs()
                             break;
                         case 3 :
                             //Affiche les settings
+                            //this->m_GameState.currentGameState.m_isConfigMenu = true;
+                            this->m_GameState.configMenu();
                             break;
                         case 4 :
                             //Affiche les High scores
@@ -310,6 +319,10 @@ void Engine::update()
     {
         //Affiche l'écran de fin
     }
+    if(m_GameState.currentGameState.m_isConfigMenu)
+    {
+        //Affiche l'écran de configuration
+    }
     if(m_GameState.currentGameState.m_isInGame) {
         //Met à jour le jeu
         if(this->m_musciPlay) {
@@ -347,6 +360,11 @@ void Engine::draw()
     if(m_GameState.currentGameState.m_isGameOver)
     {
         //Affiche l'écran de fin
+    }
+    if(m_GameState.currentGameState.m_isConfigMenu)
+    {
+        //Affiche l'écran de COnfiguration
+        this->m_configMenuScreen.draw();
     }
     if(m_GameState.currentGameState.m_isInGame)
     {

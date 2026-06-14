@@ -34,6 +34,8 @@ add_executable(SFML_Pong main.cpp Engine.cpp Engine.hpp Button.cpp Button.hpp Ma
         Ball.hpp
         globals.hpp
         globals.cpp
+        SettingsScreen.cpp
+        SettingsScreen.hpp
 )
 target_compile_features(SFML_Pong PRIVATE cxx_std_17)
 

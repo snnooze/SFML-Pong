@@ -1,9 +1,14 @@
 #include "Button.hpp"
 #include <iostream>
 
-Button::Button(sf::Texture *textures, sf::IntRect size) : sf::Sprite(*textures, size)
+Button::Button(sf::Texture *textures, sf::IntRect size, bool isSmallButton) : sf::Sprite(*textures, size)
 {
-    this->setTexture(textures[1]);
+    if (!isSmallButton) {
+        this->setTexture(textures[1]);
+    }
+    else {
+        this->setTexture(textures[5]);
+    }
 
 }
 

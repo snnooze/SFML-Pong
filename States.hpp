@@ -13,9 +13,11 @@ class States
             bool m_isGameOver = false;
             bool m_isMainMenu = true;
             bool m_isInGame  = false;
+            bool m_isConfigMenu = false;
         }currentGameState;
         void pause();
         void mainMenu();
         void game();
+        void configMenu();
         void gameOver();
 };
