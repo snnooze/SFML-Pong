@@ -1,9 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Button.hpp"
-#include "globals.hpp"
-
-extern sf::SoundBuffer Globals::g_bufferMenu;
 class MainMenuScreen
 {
 
@@ -30,15 +27,14 @@ class MainMenuScreen
         Button m_exitButton =  Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
         sf::Text m_exitLabelTxt = sf::Text(m_font, "");
         int m_previousPosition = 1;
-        sf::Sound m_sound = sf::Sound(Globals::g_bufferMenu);
 
     public : 
         MainMenuScreen(sf::RenderWindow &par, sf::Texture textures[2], const sf::Font &font);
         int m_menuPosition = 1;
         void inputs();
         void update(float dt = 0.f);
-        void emitSound();
         sf::Sprite getSprite();
+        void setVolumeBtn(float volume);
         void draw();
         ~MainMenuScreen();
 };

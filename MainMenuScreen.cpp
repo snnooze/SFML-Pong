@@ -27,35 +27,35 @@ MainMenuScreen::MainMenuScreen(sf::RenderWindow &par, sf::Texture textures[2], c
 
     //Initialize the 1 PLayer button
     this->m_1PlayerBtn = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
-    this->m_1PlayerBtn.initialize(*this->m_textures);
+    //this->m_1PlayerBtn.initialize(*this->m_textures);
     //Initialize the Text of the button
     this->m_labelTxt = sf::Text(this->m_font, "1 Player", 25);
     this->m_labelTxt.setFillColor(sf::Color::White);
 
     //Initialize the 2 players Button
     this->m_2PlayersBtn = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
-    this->m_2PlayersBtn.initialize(*this->m_textures);
+    //this->m_2PlayersBtn.initialize(*this->m_textures);
     //Initialize the 2 Players Text for the button
     this->m_label2playersTxt = sf::Text(this->m_font, "2 Players", 20);
     this->m_label2playersTxt.setFillColor(sf::Color::White);
 
     //Initialize the Settings Button
     this->m_settingsButton = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
-    this->m_settingsButton.initialize(*this->m_textures);
+    //this->m_settingsButton.initialize(*this->m_textures);
     //Initialize the Settings Text
     this->m_settingsLabelTxt = sf::Text(this->m_font, "Settings", 25);
     this->m_settingsLabelTxt.setFillColor(sf::Color::White);
 
     //Initialize the Scores Button
     this->m_scoresButton = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
-    this->m_scoresButton.initialize(*this->m_textures);
+    //this->m_scoresButton.initialize(*this->m_textures);
     //Initialize the Scores Text
     this->m_scoresLabelTxt = sf::Text(this->m_font, "Scores", 25);
     this->m_scoresLabelTxt.setFillColor(sf::Color::White);
 
     //Initialize the Exit Button
     this->m_exitButton = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
-    this->m_exitButton.initialize(*this->m_textures);
+    //this->m_exitButton.initialize(*this->m_textures);
     //Initialize the Scores Text
     this->m_exitLabelTxt = sf::Text(this->m_font, "Quit", 25);
     this->m_exitLabelTxt.setFillColor(sf::Color::White);
@@ -73,10 +73,6 @@ void MainMenuScreen::inputs()
 
 void MainMenuScreen::update(float dt)
 {
-    if (this->m_previousPosition != this->m_menuPosition) {
-        this->emitSound();
-        this->m_previousPosition = this->m_menuPosition;
-    }
     //moving between the main menu button with the arrows of the keyboard switch they state
     switch (this->m_menuPosition)
     {
@@ -116,7 +112,7 @@ void MainMenuScreen::update(float dt)
        this->m_exitButton.m_position = 1;
        break;
     default:
-        this->m_1PlayerBtn.m_position = 0; 
+        this->m_1PlayerBtn.m_position = 0;
         this->m_2PlayersBtn.m_position = 0;
          this->m_settingsButton.m_position = 0;
          this->m_scoresButton.m_position = 0;
@@ -124,17 +120,20 @@ void MainMenuScreen::update(float dt)
         break;
     }
 
-    this->m_1PlayerBtn.setHover();
-    this->m_2PlayersBtn.setHover();
-    this->m_settingsButton.setHover();
-    this->m_scoresButton.setHover();
-    this->m_exitButton.setHover();
+            this->m_1PlayerBtn.setHover();
+            this->m_2PlayersBtn.setHover();
+            this->m_settingsButton.setHover();
+            this->m_scoresButton.setHover();
+            this->m_exitButton.setHover();
 
 }
 
-void MainMenuScreen::emitSound() {
-    this->m_sound.setBuffer(Globals::g_bufferMenu);
-    this->m_sound.play();
+void MainMenuScreen::setVolumeBtn(float volume) {
+    this->m_1PlayerBtn.setVolumeBtn(volume);
+    this->m_2PlayersBtn.setVolumeBtn(volume);
+    this->m_settingsButton.setVolumeBtn(volume);
+    this->m_scoresButton.setVolumeBtn(volume);
+    this->m_exitButton.setVolumeBtn(volume);
 }
 
 void MainMenuScreen::draw()

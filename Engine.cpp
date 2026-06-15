@@ -216,6 +216,110 @@ void Engine::inputs()
             {
                 //Intercepte les évènements joueur pour le jeu
             }
+            if(m_GameState.currentGameState.m_isConfigMenu) {
+
+                if(!this->m_musciPlay)
+                {
+                    this->m_mainMenuMusic.play();
+                    this->m_musciPlay = true;
+                }
+
+                //std::cout<< "Main menu \n";
+                //Appuis sur entrée
+
+                if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Enter) {
+                    switch (this->m_configMenuScreen.menuPosition.y) {
+                        case 1:
+                            if (this->m_configMenuScreen.menuPosition.x == 1) {
+                                this->m_mainMenuMusic.setVolume(this->m_mainMenuMusic.getVolume() - 10.0);
+                            }
+                            else {
+                                this->m_mainMenuMusic.setVolume(this->m_mainMenuMusic.getVolume() + 10.0);
+                            }
+
+                            if (this->m_mainMenuMusic.getVolume() > 100.0) {
+                                this->m_mainMenuMusic.setVolume(100.0);
+                            }
+                            if (this->m_mainMenuMusic.getVolume() < 0.0) {
+                                this->m_mainMenuMusic.setVolume(0.0);
+                            }
+                            break;
+                        case 2:
+                            if (this->m_configMenuScreen.menuPosition.x == 1) {
+                                this->m_configMenuScreen.setVolumeBtn(-10);
+                                this->m_viewMMS.setVolumeBtn(-10);
+                                //Todo gérer volume de rebond la balle et du l'effet de sortie de balle
+                            }
+                            else {
+                                this->m_configMenuScreen.setVolumeBtn(+10);
+                                this->m_viewMMS.setVolumeBtn(+10);
+                            }
+                            break;
+                        case 3:
+                            //Todo CHanger le mode de jeu 1 jour entre Normal et endurance
+                            break;
+                        case 4 :
+                            //Todo Sauvegarder les infos dans un fichier config qui sera loadé au chargement de l'application.
+                        default :
+                            break;
+                    }
+                }
+
+                //Appuis sur la flèche du bas
+                if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Down)
+                {
+                    this->m_configMenuScreen.menuPosition.y+=1;
+                    //std::cout<< "Main menu +1 ->  "<<this->m_viewMMS.m_menuPosition << "\n";
+                    if(this->m_configMenuScreen.menuPosition.y>4)
+                    {
+                        this->m_configMenuScreen.menuPosition.y=1;
+                      //  std::cout<< "Main menu -> 1 \n";
+                    }
+                    if (this->m_configMenuScreen.menuPosition.y > 2 && this->m_configMenuScreen.menuPosition.x != 1) {
+                        this->m_configMenuScreen.menuPosition.x=1;
+                    }
+                }
+                //Appuis sur la flèche du haut
+                if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Up)
+                {
+                    this->m_configMenuScreen.menuPosition.y-=1;
+                    //std::cout<< "Main menu -1 \n";
+                    if(this->m_configMenuScreen.menuPosition.y<1)
+                    {
+                        this->m_configMenuScreen.menuPosition.y=4;
+                        //std::cout<< "Main menu -> 1 \n";
+                    }
+                    if (this->m_configMenuScreen.menuPosition.y > 2 && this->m_configMenuScreen.menuPosition.x != 1) {
+                        this->m_configMenuScreen.menuPosition.x=1;
+                    }
+                }
+                if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Left)
+                {
+                    this->m_configMenuScreen.menuPosition.x-=1;
+                    //std::cout<< "Main menu -1 \n";
+                    if(this->m_configMenuScreen.menuPosition.x<1)
+                    {
+                        this->m_configMenuScreen.menuPosition.x=2;
+
+                    }
+                    if (this->m_configMenuScreen.menuPosition.y > 2 && this->m_configMenuScreen.menuPosition.x != 1) {
+                        this->m_configMenuScreen.menuPosition.x=1;
+                    }//std::cout<< "Main menu -> 1 \n";
+                }
+                if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Right)
+                {
+                    this->m_configMenuScreen.menuPosition.x+=1;
+                    //std::cout<< "Main menu -1 \n";
+                    if(this->m_configMenuScreen.menuPosition.x>2 )
+                    {
+                        this->m_configMenuScreen.menuPosition.x=1;
+
+                    }
+                    if (this->m_configMenuScreen.menuPosition.y > 2 && this->m_configMenuScreen.menuPosition.x != 1) {
+                        this->m_configMenuScreen.menuPosition.x=1;
+                    }
+                }
+            }
             if(m_GameState.currentGameState.m_isMainMenu)
             {
                 if(!this->m_musciPlay)
@@ -228,10 +332,6 @@ void Engine::inputs()
                 //Appuis sur la flèche du bas
                 if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Down)
                 {
-                    // if(this->m_bruit.getStatus() != sf::SoundSource::Status::Playing) {
-                    //     this->m_bruit.setBuffer(g_ButtonBuffer);
-                    //     this->m_bruit.play();
-                    // }
 
                     this->m_viewMMS.m_menuPosition+=1;
                     std::cout<< "Main menu +1 ->  "<<this->m_viewMMS.m_menuPosition << "\n";
@@ -244,10 +344,6 @@ void Engine::inputs()
                 //Appuis sur la flèche du haut
                 if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Up)
                 {
-                    // if(this->m_bruit.getStatus() != sf::SoundSource::Status::Playing) {
-                    //     this->m_bruit.setBuffer(g_ButtonBuffer);
-                    //     this->m_bruit.play();
-                    // }
                     this->m_viewMMS.m_menuPosition-=1;
                     std::cout<< "Main menu -1 \n";
                     if(this->m_viewMMS.m_menuPosition<1)
@@ -322,6 +418,7 @@ void Engine::update()
     if(m_GameState.currentGameState.m_isConfigMenu)
     {
         //Affiche l'écran de configuration
+        this->m_configMenuScreen.update(deltaTime);
     }
     if(m_GameState.currentGameState.m_isInGame) {
         //Met à jour le jeu
