@@ -112,6 +112,17 @@ SettingsScreen::SettingsScreen(sf::RenderWindow &par, sf::Texture textures[6], s
 
 }
 
+void SettingsScreen::switchGameMode() {
+
+    if (this->m_textGameModeSelected.getString()  == "Normal") {
+        this->m_textGameModeSelected.setString("Endurance");
+    }
+    else {
+        this->m_textGameModeSelected.setString("Normal");
+    }
+
+}
+
 void SettingsScreen::update(float dt) {
 
     switch (this->menuPosition.y) {
@@ -191,6 +202,9 @@ void SettingsScreen::update(float dt) {
     this->m_buttonMoinsSFX.setHover();
     this->m_buttonPlusSFX.setHover();
 
+    this->m_textGameModeSelected.setOrigin(this->m_textGameModeSelected.getLocalBounds().getCenter());
+    this->m_textGameModeSelected.setPosition(this->m_buttonGameMode.getGlobalBounds().getCenter());
+
 
 
 }
@@ -202,6 +216,31 @@ void SettingsScreen::setVolumeBtn(float volumeBtn) {
     this->m_buttonGameMode.setVolumeBtn(volumeBtn);
     this->m_buttonMoinsSFX.setVolumeBtn(volumeBtn);
     this->m_buttonPlusSFX.setVolumeBtn(volumeBtn);
+}
+
+void SettingsScreen::storeVolumeMusic(float volumeMusic) {
+
+    this->m_volumeMusic += volumeMusic;
+
+    if (this->m_volumeMusic < 0) {
+        this->m_volumeMusic = 0;
+    }
+    if (this->m_volumeMusic >100) {
+        this->m_volumeMusic = 100;
+    }
+}
+
+void SettingsScreen::storeVolumeSFX(float volumeSFX) {
+
+    this->m_volumeSFX += volumeSFX;
+
+    if (this->m_volumeSFX < 0) {
+        this->m_volumeSFX = 0;
+    }
+    if (this->m_volumeSFX >100) {
+        this->m_volumeSFX = 100;
+    }
+
 }
 
 void SettingsScreen::draw() {
@@ -258,6 +297,37 @@ void SettingsScreen::draw() {
 
     this->m_parent->draw(this->m_buttonSave);
     this->m_parent->draw(this->m_textSave);
+}
+
+void SettingsScreen::saveConfig() {
+
+    float volumeMusique = this->m_volumeMusic;
+    float volumeSFX = this->m_volumeSFX;
+    int gameMode = 1;
+
+    if (this->m_textGameModeSelected.getString() != "Normal") {
+        gameMode = 2;
+    }
+
+    FILE *fichier;
+
+    if (fichier = std::fopen("Assets/Resources/config.txt", "w")) {
+
+        std::string sortie = std::to_string(volumeMusique) + "\n" + std::to_string(volumeSFX) + "\n" + std::to_string(gameMode);
+        if (std::fprintf(fichier, sortie.c_str())) {
+            this->m_textSave.setString("Saved");
+        }
+        else {
+            this->m_textSave.setString("Error");
+        }
+
+    }
+    else {
+        this->m_textSave.setString("Error");
+    }
+
+    fclose(fichier);
+
 }
 
 SettingsScreen::~SettingsScreen() = default;

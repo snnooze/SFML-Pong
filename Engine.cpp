@@ -198,7 +198,7 @@ void Engine::inputs()
                 }
             }
 
-            //TODO : Passage en full screen
+            //TODO : Empêcher Passage en full screen
 
             if(m_GameState.currentGameState.m_isPaused)
             {
@@ -229,12 +229,14 @@ void Engine::inputs()
 
                 if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Enter) {
                     switch (this->m_configMenuScreen.menuPosition.y) {
-                        case 1:
+                        case 1: //Volume de la musique
                             if (this->m_configMenuScreen.menuPosition.x == 1) {
                                 this->m_mainMenuMusic.setVolume(this->m_mainMenuMusic.getVolume() - 10.0);
+                                this->m_configMenuScreen.storeVolumeMusic(-10.0);
                             }
                             else {
                                 this->m_mainMenuMusic.setVolume(this->m_mainMenuMusic.getVolume() + 10.0);
+                                this->m_configMenuScreen.storeVolumeMusic(+10.0);
                             }
 
                             if (this->m_mainMenuMusic.getVolume() > 100.0) {
@@ -244,22 +246,25 @@ void Engine::inputs()
                                 this->m_mainMenuMusic.setVolume(0.0);
                             }
                             break;
-                        case 2:
+                        case 2: //volume des SFX
                             if (this->m_configMenuScreen.menuPosition.x == 1) {
                                 this->m_configMenuScreen.setVolumeBtn(-10);
                                 this->m_viewMMS.setVolumeBtn(-10);
-                                //Todo gérer volume de rebond la balle et du l'effet de sortie de balle
+                                this->m_game.setVolume(-10);
+                                this->m_configMenuScreen.storeVolumeSFX(-10.0);
                             }
                             else {
                                 this->m_configMenuScreen.setVolumeBtn(+10);
                                 this->m_viewMMS.setVolumeBtn(+10);
+                                this->m_game.setVolume(+10);
+                                this->m_configMenuScreen.storeVolumeSFX(+10.0);
                             }
                             break;
-                        case 3:
-                            //Todo CHanger le mode de jeu 1 jour entre Normal et endurance
+                        case 3: //Bouton de changement de mode de jeu
+                            this->m_configMenuScreen.switchGameMode();
                             break;
-                        case 4 :
-                            //Todo Sauvegarder les infos dans un fichier config qui sera loadé au chargement de l'application.
+                        case 4 : //Bouton de sauvegarde
+                            this->m_configMenuScreen.saveConfig();
                         default :
                             break;
                     }

@@ -16,7 +16,7 @@ class Button : public Sprite
     bool isSmallButton = false;
     sf::Sound m_sound = sf::Sound(Globals::g_bufferMenu);
     public:
-    Button(sf::Texture *text, sf::IntRect size, bool isSmallButton = false);
+    Button(sf::Texture *text[6], sf::IntRect size, bool isSmallButton = false);
     Text m_labelTxt = Text(m_font, "1 Player");
     void update();
     void setHover();

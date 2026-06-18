@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include <iostream>
 
-Game::Game(sf::RenderWindow &par, sf::Texture textures[5], const sf::Font &font, bool is_2PlayersMode) {
+Game::Game(sf::RenderWindow &par, sf::Texture textures[6], const sf::Font &font, bool is_2PlayersMode) {
     //Get the parent Window
     this->m_parent = &par;
 
@@ -24,13 +24,13 @@ Game::Game(sf::RenderWindow &par, sf::Texture textures[5], const sf::Font &font,
 
 
     if (this->m_is2PlayersMode) {
-        this->m_paddleLeft = Paddle(par, this->m_textures, true);
+        this->m_paddleLeft = Paddle(par, *this->m_textures, true);
     }
     else {
-        this->m_paddleLeft = Paddle(par, this->m_textures, true);
+        this->m_paddleLeft = Paddle(par, *this->m_textures, true);
     }
 
-    this->m_paddleRight = Paddle(par, this->m_textures, false);
+    this->m_paddleRight = Paddle(par, *this->m_textures, false);
     this->m_ball = Ball(par, this->m_textures);
 
     this->m_paddleRight.setOrigin(this->m_paddleRight.getLocalBounds().getCenter());
@@ -230,6 +230,12 @@ void Game::stopPlayer2() {
     if (this->m_isActive && this->m_is2PlayersMode) {
         this->movePlayer2 = 0;
     }
+}
+
+void Game::setVolume(float volume) {
+
+    this->m_ball.setVolume(volume);
+
 }
 
 void Game::resetScore() {

@@ -1,6 +1,6 @@
 #include "Ball.hpp"
 
-Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[5]) : Sprite(*textures[4])
+Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[6]) : Sprite(*textures[3])
 {
     this->m_parent = &par;
 
@@ -100,6 +100,26 @@ void Ball::reverseDirection() {
 void Ball::emitOutSound() {
     m_out.setBuffer(Globals::g_bufferOut);
     m_out.play();
+}
+
+void Ball::setVolume(float volume) {
+    this->m_rebond.setVolume(this->m_rebond.getVolume() + volume);
+    this->m_out.setVolume(this->m_rebond.getVolume() + volume);
+
+    if (this->m_rebond.getVolume() <0) {
+        this->m_rebond.setVolume(0);
+    }
+    else if (this->m_rebond.getVolume() > 100) {
+        this->m_rebond.setVolume(100);
+    }
+
+    if (this->m_out.getVolume() <0) {
+        this->m_out.setVolume(0);
+    }
+    else if (this->m_out.getVolume() > 100) {
+        this->m_out.setVolume(100);
+    }
+
 }
 
 sf::Vector2f Ball::getDirection()

@@ -9,12 +9,12 @@ private :
     int m_pos_y = 0;
     bool m_isLeftPaddle = true;
     int m_speed = 100;
-    sf::Texture *m_textures[5];
+    sf::Texture *m_textures[6];
     bool m_isAI = false;
 
 
 public :
-    Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddle);
+    Paddle(sf::RenderWindow &par, sf::Texture textures[6], bool isLeftPaddle);
     void inputs();
     void update(float deltaTime);
     void draw();

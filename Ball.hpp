@@ -30,5 +30,6 @@ public :
     void reverseDirection();
     sf::Vector2f getDirection();
     void emitOutSound();
+    void setVolume(float volume);
     ~Ball();
 };

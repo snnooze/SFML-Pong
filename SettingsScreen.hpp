@@ -11,19 +11,19 @@ private :
     sf::Texture *m_textures[6];
     sf::Font m_Font;
 
-    Button m_buttonPlusMusique = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(60, 60)), true);
+    Button m_buttonPlusMusique = Button(this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(60, 60)), true);
 
-    Button m_buttonMoinsMusique = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(60, 60)), true);
+    Button m_buttonMoinsMusique = Button(this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(60, 60)), true);
 
-    Button m_buttonPlusSFX = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(60, 60)), true);
+    Button m_buttonPlusSFX = Button(this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(60, 60)), true);
 
-    Button m_buttonMoinsSFX = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(60, 60)), true);
+    Button m_buttonMoinsSFX = Button(this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(60, 60)), true);
 
-    Button m_buttonSave = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
+    Button m_buttonSave = Button(this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
 
-    Button m_buttonCredits = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
+    Button m_buttonCredits = Button(this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
 
-    Button m_buttonGameMode = Button(*this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
+    Button m_buttonGameMode = Button(this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
 
     sf::Text m_textPlus1= sf::Text(this->m_Font, "");
     sf::Text m_textPlus2= sf::Text(this->m_Font, "");
@@ -39,12 +39,19 @@ private :
 
     sf::Text m_stateText = Text(this->m_Font, "");
 
+    float m_volumeMusic = 50.0f;
+    float m_volumeSFX = 50.0f;
+
 public :
    SettingsScreen(sf::RenderWindow &par, sf::Texture textures[6], sf::Font &font);
     void update(float dtTime);
     void draw();
     sf::Vector2i menuPosition = sf::Vector2i(1, 1);
     void setVolumeBtn(float volumeBtn);
+    void storeVolumeMusic(float volumeMusic);
+    void storeVolumeSFX(float volumeSFX);
+    void switchGameMode();
+    void saveConfig();
     ~SettingsScreen();
 
 };

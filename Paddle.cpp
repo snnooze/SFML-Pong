@@ -1,16 +1,16 @@
 #include "Paddle.hpp"
 
-Paddle::Paddle(sf::RenderWindow &par, sf::Texture *textures[5], bool isLeftPaddle) : Sprite(*textures[4])
+Paddle::Paddle(sf::RenderWindow &par, sf::Texture textures[6], bool isLeftPaddle) : Sprite(textures[4])
 {
     this->m_parent = &par;
 
     //Get the textures loaded at the game launch
-    for(int i = 0; i<=4; i++)
+    for(int i = 0; i<=5; i++)
     {
-        this->m_textures[i] = textures[i];
+        this->m_textures[i] = &textures[i];
     }
 
-    this->setTexture(*textures[4]);
+    this->setTexture(textures[4]);
 
     this->m_isLeftPaddle = isLeftPaddle;
 
