@@ -39,18 +39,21 @@ private :
 
     sf::Text m_stateText = Text(this->m_Font, "");
 
-    float m_volumeMusic = 50.0f;
-    float m_volumeSFX = 50.0f;
+    float m_volumeMusic = 0.0f;
+    float m_volumeSFX = 0.0f;
 
 public :
    SettingsScreen(sf::RenderWindow &par, sf::Texture textures[6], sf::Font &font);
     void update(float dtTime);
     void draw();
     sf::Vector2i menuPosition = sf::Vector2i(1, 1);
+    void setVolumeMusic(float volumeMusic);
     void setVolumeBtn(float volumeBtn);
+    void setVolumeButtons(float volumeBtn);
     void storeVolumeMusic(float volumeMusic);
     void storeVolumeSFX(float volumeSFX);
     void switchGameMode();
+    void setGameMode(int mode);
     void saveConfig();
     ~SettingsScreen();
 

@@ -209,6 +209,14 @@ void SettingsScreen::update(float dt) {
 
 }
 
+void SettingsScreen::setVolumeMusic(float volumeMusic) {
+    this->m_volumeMusic = volumeMusic;
+}
+
+void SettingsScreen::setVolumeButtons(float volumeSFX) {
+    this->m_volumeSFX = volumeSFX;
+}
+
 void SettingsScreen::setVolumeBtn(float volumeBtn) {
     this->m_buttonMoinsMusique.setVolumeBtn(volumeBtn);
     this->m_buttonPlusMusique.setVolumeBtn(volumeBtn);
@@ -296,6 +304,8 @@ void SettingsScreen::draw() {
     this->m_parent->draw(this->m_textGameModeSelected);
 
     this->m_parent->draw(this->m_buttonSave);
+    this->m_textSave.setOrigin(this->m_textSave.getLocalBounds().getCenter());
+    this->m_textSave.setPosition(this->m_buttonSave.getGlobalBounds().getCenter());
     this->m_parent->draw(this->m_textSave);
 }
 
@@ -328,6 +338,15 @@ void SettingsScreen::saveConfig() {
 
     fclose(fichier);
 
+}
+
+void SettingsScreen::setGameMode(int mode) {
+    if (mode == 1) {
+        this->m_textGameModeSelected.setString("Normal");
+    }
+    else {
+        this->m_textGameModeSelected.setString("Endurance");
+    }
 }
 
 SettingsScreen::~SettingsScreen() = default;

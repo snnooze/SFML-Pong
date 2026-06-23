@@ -41,5 +41,6 @@ class Engine
         void inputs();
         void update();
         void draw();
+        void loadConfig();
         ~Engine();
 };

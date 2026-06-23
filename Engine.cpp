@@ -9,6 +9,9 @@ Engine::Engine()
         {
             if(this->m_mainMenuMusic.openFromFile("Assets/Sounds/music.mp3"))
             {
+
+                    this->loadConfig();
+
                     this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
 
                     //Limit the Framerate
@@ -41,6 +44,38 @@ Engine::Engine()
 
     this->m_window.setKeyRepeatEnabled(false);
 
+}
+
+void Engine::loadConfig() {
+
+    FILE *fichier;
+    char line[20];
+    size_t len;
+    char conf[3][sizeof(line)];
+
+    if (fichier = std::fopen("Assets/Resources/config.txt", "r")) {
+
+        for (int i = 0; i < 3; i++) {
+            fgets(conf[i], sizeof(line), fichier);
+        }
+
+    }
+    else {
+        std::cout << "COnfig File loading Failed...";
+    }
+
+    // for (int i = 0; i < 3; i++) {
+    //     std::cout<<conf[i]<<std::endl;
+    // }
+    float vol = std::stof(conf[0]);
+    this->m_mainMenuMusic.setVolume(vol);
+    this->m_viewMMS.setVolumeBtn(std::stof(conf[1]));
+    this->m_configMenuScreen.setVolumeBtn(std::stof(conf[1]));
+    this->m_configMenuScreen.setVolumeMusic(vol);
+    this->m_configMenuScreen.setVolumeButtons(std::stof(conf[1]));
+    this->m_game.setStartingVolume(std::stof(conf[1]));
+    this->m_game.setGameMode(std::stoi(conf[2]));
+    this->m_configMenuScreen.setGameMode(std::stoi(conf[2]));
 }
 
 bool Engine::texturesLoader()
@@ -125,7 +160,14 @@ void Engine::inputs()
             //CLick sur la croix de fermeture de la fenêtre
             if(event->is<sf::Event::Closed>())
             {
-                m_window.close();
+                this->m_window.close();
+            }
+
+            if(event->is<sf::Event::Resized>())
+            {
+                sf::Vector2u size({(unsigned)this->m_windowWidth, (unsigned)this->m_windowHeight});
+                this->m_window.setMaximumSize(size);
+                this->m_window.setMinimumSize(size);
             }
 
             //Pendant le mode jeu et la pause la lettre P fait passer le jeu en pause ou hors pause

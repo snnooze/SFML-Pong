@@ -31,6 +31,7 @@ public :
     Game(sf::RenderWindow &par, sf::Texture textures[6], const sf::Font &font, bool is2PlayersMode);
     void start();
     void reset();
+    void checkVictoryConditions();
     void over();
     void inputs();
     void update(float dtt);
@@ -45,6 +46,8 @@ public :
     void set1PlayersMode();
     void resetScore();
     void setVolume(float volume);
+    void setStartingVolume(float volume);
+    void setGameMode(int mode);
     ~Game();
 
 };

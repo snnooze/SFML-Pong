@@ -208,6 +208,29 @@ void Game::reset() {
     this->movePlayer2 = 0;
     this->stopPlayer1();
     this->stopPlayer2();
+
+    this->checkVictoryConditions();
+
+}
+
+void Game::checkVictoryConditions() {
+
+    if ((this->m_scorePlayer1 > 11 || this->m_scorePlayer2 > 11) && this->m_gameMode == 1) {
+
+        this->m_isActive = true;
+
+        //Ecran de fin et de victoire défaite
+
+    }
+
+    if ((this->m_scorePlayer1 < this->m_scorePlayer2) && this->m_gameMode == 2) {
+
+        this->m_isActive = true;
+
+        //Le joueur 1 Perd en mode endurance, Affichage Game over et stockage du score si necessaire
+
+    }
+
 }
 
 void Game::movePlayer2Up()
@@ -238,12 +261,20 @@ void Game::setVolume(float volume) {
 
 }
 
+void Game::setStartingVolume(float volume) {
+    this->m_ball.setVolume(volume);
+}
+
 void Game::resetScore() {
     this->m_scorePlayer1 = 0;
     this->m_scorePlayer2 = 0;
 
     this->m_scorePlayer1Lbl.setString(std::to_string(this->m_scorePlayer1));
     this->m_scorePlayer2Lbl.setString(std::to_string(this->m_scorePlayer2));
+}
+
+void Game::setGameMode(int mode) {
+    this->m_gameMode = mode;
 }
 
 Game::~Game() = default;
