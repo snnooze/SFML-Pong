@@ -11,14 +11,13 @@ using namespace sf;
 class Button : public Sprite
 {
     private: 
-    Texture *m_texture[2];
+    Texture *m_textures;
     Font m_font;
-    bool isSmallButton = false;
+    bool m_isSmallButton = false;
     sf::Sound m_sound = sf::Sound(Globals::g_bufferMenu);
     public:
-    Button(sf::Texture *text[6], sf::IntRect size, bool isSmallButton = false);
-    Text m_labelTxt = Text(m_font, "1 Player");
-    void update();
+    Button(sf::Texture &text, sf::IntRect size, bool isSmallButton = false);
+    Text m_labelTxt = Text(m_font, "");
     void setHover();
     int m_position = 1;
     int previousPosition = 1;

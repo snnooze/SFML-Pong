@@ -19,14 +19,13 @@ class Engine
         void createWindow(int width, int height, String name);
         bool texturesLoader();
         Font m_Font;
-        Texture m_Logo;
-        Texture m_textures[6];
+        Texture m_textures;
         const String m_GameName = "#Pong";
         Clock m_clock;
         Time m_dt;
         States m_GameState;
-        PauseScreen m_PS = PauseScreen(this->m_window);
-        MainMenuScreen m_viewMMS = MainMenuScreen(this->m_window, this->m_textures, this->m_Font);
+        //PauseScreen m_PS = PauseScreen(this->m_window);
+        MainMenuScreen m_viewMMS = MainMenuScreen(m_window, m_textures);
         SettingsScreen m_configMenuScreen = SettingsScreen(this->m_window, this->m_textures, this->m_Font);
         Game m_game = Game(this->m_window, this->m_textures, this->m_Font, false);
         Music m_mainMenuMusic;

@@ -11,8 +11,8 @@ private :
     int m_parentWidth = 0;
     int m_parentHeight = 0;
     int m_mode2Players = false;
-    Paddle m_paddleLeft = Paddle(*this->m_parent, *this->m_textures, true);
-    Paddle m_paddleRight = Paddle(*this->m_parent, *this->m_textures, false);
+    Paddle m_paddleLeft = Paddle(*m_parent, m_textures, true);
+    Paddle m_paddleRight = Paddle(*m_parent, this->m_textures, false);
     Ball m_ball = Ball(*this->m_parent, this->m_textures);
     int m_scorePlayer1 = 0;
     int m_scorePlayer2 = 0;
@@ -20,15 +20,17 @@ private :
     sf::Text m_scorePlayer2Lbl = sf::Text(this->m_font, (char)this->m_scorePlayer2, 45);
     int m_ballSpeed = 120;
     sf::Vector2f m_angle = {0, 0};
-    sf::Texture *m_textures[6];
+    sf::Texture m_textures;
     bool m_isActive = false;
     bool m_is2PlayersMode;
     int movePlayer1 = 0;
     int movePlayer2 = 0;
     bool m_isFirstPlayerTurn = true;
     int m_gameMode = 1;
+    bool m_gameEnded = false;
 public :
-    Game(sf::RenderWindow &par, sf::Texture textures[6], const sf::Font &font, bool is2PlayersMode);
+    Game(sf::RenderWindow &par, sf::Texture &textures, const sf::Font &font, bool is2PlayersMode);
+    void setGame();
     void start();
     void reset();
     void checkVictoryConditions();

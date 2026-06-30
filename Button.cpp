@@ -1,20 +1,20 @@
 #include "Button.hpp"
 #include <iostream>
 
-Button::Button(sf::Texture *textures[6], sf::IntRect size, bool isSmallButton) : sf::Sprite(*textures[1], size)
+Button::Button(sf::Texture &textures, sf::IntRect size, bool isSmallButton) : sf::Sprite(textures, size)
 {
-    this->isSmallButton = isSmallButton;
-    if (!isSmallButton) {
-        this->setTexture(*textures[1]);
+    m_isSmallButton = isSmallButton;
+
+    m_textures = &textures;
+
+    setTexture(*m_textures);
+
+    if (!m_isSmallButton) {
+        setTextureRect(sf::IntRect({1847, 0},{150, 193/3}));
     }
     else {
-        this->setTexture(*textures[5]);
+        setTextureRect(sf::IntRect({1289, 453},{60, 60}));
     }
-
-}
-
-void Button::update()
-{
 
 }
 
@@ -32,11 +32,11 @@ void Button::setVolumeBtn(float volume) {
 
 void Button::setHover()
 {
-    if (!this->isSmallButton) {
-        this->setTextureRect(sf::IntRect(sf::Vector2(0, this->m_position*64), sf::Vector2(sf::Vector2(150, 64))));
+    if (!this->m_isSmallButton) {
+        this->setTextureRect(sf::IntRect(sf::Vector2(1847, this->m_position*64), sf::Vector2(sf::Vector2(150, 64))));
     }
     else {
-        this->setTextureRect(sf::IntRect(sf::Vector2(0, this->m_position*60), sf::Vector2(sf::Vector2(60, 60))));
+        this->setTextureRect(sf::IntRect(sf::Vector2(1289, 453+this->m_position*60), sf::Vector2(sf::Vector2(60, 60))));
     }
 
     if (this->previousPosition != this->m_position) {

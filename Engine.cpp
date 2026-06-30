@@ -1,49 +1,35 @@
 #include "Engine.hpp"
 
-Engine::Engine()
-{
+Engine::Engine() {
+    if (this->m_Font.openFromFile("Assets/Fonts/kenvector_future_thin.ttf")) {
+        if (this->texturesLoader()) {
+            if (this->m_mainMenuMusic.openFromFile("Assets/Sounds/music.mp3")) {
+                this->loadConfig();
 
-    if(this->m_Font.openFromFile("Assets/Fonts/kenvector_future_thin.ttf"))
-    {
-        if(this->texturesLoader())
-        {
-            if(this->m_mainMenuMusic.openFromFile("Assets/Sounds/music.mp3"))
-            {
+                this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
 
-                    this->loadConfig();
+                //Limit the Framerate
+                this->m_window.setVerticalSyncEnabled(true);
 
-                    this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
+                this->m_window.setFramerateLimit(60);
 
-                    //Limit the Framerate
-                    this->m_window.setVerticalSyncEnabled(true);
+                this->m_window.setKeyRepeatEnabled(false);
 
-                    this->m_window.setFramerateLimit(60);
+                m_viewMMS = MainMenuScreen(m_window, m_textures);
+                m_viewMMS.showMenu();
 
-            }
-            else
-            {
+                m_game = Game(m_window, m_textures, m_Font, false);
+                m_game.setGame();
+
+            } else {
                 std::cout << "Music loading Failed";
-
             }
-
-            
-
-        }
-        else
-        {
+        } else {
             std::cout << "Textures loading Failed";
         }
-        
-    }
-    else
-    {
+    } else {
         std::cout << "Font loading Failed";
     }
-    //TODO : Regarder ou placer et charger tous les sprites, début ?
-   
-
-    this->m_window.setKeyRepeatEnabled(false);
-
 }
 
 void Engine::loadConfig() {
@@ -70,56 +56,29 @@ void Engine::loadConfig() {
     float vol = std::stof(conf[0]);
     this->m_mainMenuMusic.setVolume(vol);
     this->m_viewMMS.setVolumeBtn(std::stof(conf[1]));
-    this->m_configMenuScreen.setVolumeBtn(std::stof(conf[1]));
-    this->m_configMenuScreen.setVolumeMusic(vol);
-    this->m_configMenuScreen.setVolumeButtons(std::stof(conf[1]));
-    this->m_game.setStartingVolume(std::stof(conf[1]));
-    this->m_game.setGameMode(std::stoi(conf[2]));
-    this->m_configMenuScreen.setGameMode(std::stoi(conf[2]));
+     this->m_configMenuScreen.setVolumeBtn(std::stof(conf[1]));
+     this->m_configMenuScreen.setVolumeMusic(vol);
+     this->m_configMenuScreen.setVolumeButtons(std::stof(conf[1]));
+     this->m_game.setStartingVolume(std::stof(conf[1]));
+     this->m_game.setGameMode(std::stoi(conf[2]));
+     this->m_configMenuScreen.setGameMode(std::stoi(conf[2]));
 }
 
 bool Engine::texturesLoader()
 {
-    if(!this->icone.loadFromFile("Assets/Graphics/icon.png"))
+    if(!icone.loadFromFile("Assets/Graphics/icon.png"))
     {
         std::cout << "Icon loading Failed";
         return false;
     }
 
-    if(!this->m_textures[0].loadFromFile("Assets/Graphics/logo.png"))
+    if(!m_textures.loadFromFile("Assets/Graphics/atlas.png"))
     {
-        std::cout << "Logo loading Failed";
+        std::cout << "Atlas loading Failed";
         return false;
     }
+    else {
 
-    if(!this->m_textures[1].loadFromFile("Assets/Graphics/Button.png"))
-    {
-        std::cout << "Button loading Failed";
-        return false;
-    }
-
-    if(!this->m_textures[2].loadFromFile("Assets/Graphics/background.png"))
-    {
-        std::cout << "Background loading Failed";
-        return false;
-    }
-
-    if(!this->m_textures[3].loadFromFile("Assets/Graphics/ball.png"))
-    {
-        std::cout << "Ball loading Failed";
-        return false;
-    }
-
-    if(!this->m_textures[4].loadFromFile("Assets/Graphics/paddle.png"))
-    {
-        std::cout << "Paddle loading Failed";
-        return false;
-    }
-
-    if(!this->m_textures[5].loadFromFile("Assets/Graphics/setting_buttons.png"))
-    {
-        std::cout << "Setting button loading Failed";
-        return false;
     }
 
     return true;
@@ -178,7 +137,6 @@ void Engine::inputs()
 
             if((this->m_GameState.currentGameState.m_isInGame || !this->m_GameState.currentGameState.m_isPaused) && (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Space))
             {
-
                 this->m_game.start();
             }
 
@@ -240,14 +198,12 @@ void Engine::inputs()
                 }
             }
 
-            //TODO : Empêcher Passage en full screen
-
             if(m_GameState.currentGameState.m_isPaused)
             {
                 //Ne fait rien sur le jeu c'est en pause attends la commande de reprise
 
                 //Intercepte les inputs utilisateur en mode Pause (faire passer les events en argument ? )
-                this->m_PS.inputs();
+                //this->m_PS.inputs();
 
             }
             if(m_GameState.currentGameState.m_isGameOver)
@@ -315,16 +271,16 @@ void Engine::inputs()
                 //Appuis sur la flèche du bas
                 if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Down)
                 {
-                    this->m_configMenuScreen.menuPosition.y+=1;
-                    //std::cout<< "Main menu +1 ->  "<<this->m_viewMMS.m_menuPosition << "\n";
-                    if(this->m_configMenuScreen.menuPosition.y>4)
-                    {
-                        this->m_configMenuScreen.menuPosition.y=1;
-                      //  std::cout<< "Main menu -> 1 \n";
-                    }
-                    if (this->m_configMenuScreen.menuPosition.y > 2 && this->m_configMenuScreen.menuPosition.x != 1) {
-                        this->m_configMenuScreen.menuPosition.x=1;
-                    }
+                    m_configMenuScreen.menuPosition.y+=1;
+                     //std::cout<< "Main menu +1 ->  "<<this->m_viewMMS.m_menuPosition << "\n";
+                     if(this->m_configMenuScreen.menuPosition.y>4)
+                     {
+                         this->m_configMenuScreen.menuPosition.y=1;
+                       //  std::cout<< "Main menu -> 1 \n";
+                     }
+                     if (this->m_configMenuScreen.menuPosition.y > 2 && this->m_configMenuScreen.menuPosition.x != 1) {
+                         this->m_configMenuScreen.menuPosition.x=1;
+                     }
                 }
                 //Appuis sur la flèche du haut
                 if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Up)
@@ -355,16 +311,16 @@ void Engine::inputs()
                 }
                 if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Right)
                 {
-                    this->m_configMenuScreen.menuPosition.x+=1;
-                    //std::cout<< "Main menu -1 \n";
-                    if(this->m_configMenuScreen.menuPosition.x>2 )
-                    {
-                        this->m_configMenuScreen.menuPosition.x=1;
+                     this->m_configMenuScreen.menuPosition.x+=1;
+                     //std::cout<< "Main menu -1 \n";
+                     if(this->m_configMenuScreen.menuPosition.x>2 )
+                     {
+                         this->m_configMenuScreen.menuPosition.x=1;
 
-                    }
-                    if (this->m_configMenuScreen.menuPosition.y > 2 && this->m_configMenuScreen.menuPosition.x != 1) {
-                        this->m_configMenuScreen.menuPosition.x=1;
-                    }
+                     }
+                     if (this->m_configMenuScreen.menuPosition.y > 2 && this->m_configMenuScreen.menuPosition.x != 1) {
+                         this->m_configMenuScreen.menuPosition.x=1;
+                     }
                 }
             }
             if(m_GameState.currentGameState.m_isMainMenu)
@@ -380,7 +336,7 @@ void Engine::inputs()
                 if(event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Down)
                 {
 
-                    this->m_viewMMS.m_menuPosition+=1;
+                    m_viewMMS.m_menuPosition+=1;
                     std::cout<< "Main menu +1 ->  "<<this->m_viewMMS.m_menuPosition << "\n";
                     if(this->m_viewMMS.m_menuPosition>5)
                     {
@@ -404,7 +360,7 @@ void Engine::inputs()
                     switch (this->m_viewMMS.m_menuPosition)
                     {
                         case 1 :
-                            //Lance une partie à 1 joueur
+                            //Lance une partie SSSSSà 1 joueur
                             this->m_game.set1PlayersMode();
                             this->m_game.resetScore();
                             this->m_GameState.game();
@@ -418,7 +374,7 @@ void Engine::inputs()
                             break;
                         case 3 :
                             //Affiche les settings
-                            //this->m_GameState.currentGameState.m_isConfigMenu = true;
+                            // this->m_GameState.currentGameState.m_isConfigMenu = true;
                             this->m_GameState.configMenu();
                             break;
                         case 4 :
@@ -478,7 +434,7 @@ void Engine::update()
     }
     if(m_GameState.currentGameState.m_isMainMenu)
     {
-        this->m_viewMMS.update();
+        this->m_viewMMS.update(deltaTime);
         //this->m_MMS.update(deltaTime);
         //Met en pause le jeu et affiche le menu principal
     }
@@ -490,14 +446,14 @@ void Engine::update()
 void Engine::draw()
 {
 
-    m_window.clear();
+    m_window.clear(Color::Black);
 
     //objets à dessiner
     if(m_GameState.currentGameState.m_isPaused)
     {
         //Ne fait rien sur le jeu c'est en pause
        //this->m_PS.draw();
-        this->m_game.draw();
+        // this->m_game.draw();
         this->m_window.draw(pause);
 
     }

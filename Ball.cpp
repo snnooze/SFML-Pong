@@ -1,18 +1,14 @@
 #include "Ball.hpp"
 
-Ball::Ball(sf::RenderWindow &par, sf::Texture *textures[6]) : Sprite(*textures[3])
+Ball::Ball(sf::RenderWindow &par, sf::Texture &textures) : Sprite(textures)
 {
     this->m_parent = &par;
 
-    //Get the textures loaded at the game launch
-    for(int i = 0; i<=4; i++)
-    {
-        this->m_textures[i] = textures[i];
-    }
+    this->m_textures = &textures;
 
-    this->setTexture(*textures[3]);
+    this->setTexture(*this->m_textures);
 
-    sf::IntRect rect = {{0, 0},{25,25},};
+    sf::IntRect rect = {{1999, 101},{25,25},};
     this->setTextureRect(rect);
 
     if (!Globals::g_buffer.loadFromFile("Assets/sounds/rebond_SFX.ogg")) {
@@ -74,7 +70,7 @@ void Ball::update(float dtTime) {
 
 void Ball::move(float delta)
 {
-    //this->m_ballDirection *= (delta * 100);
+    this->m_ballDirection *= (delta * 100);
 }
 
 void Ball::reverseDirection() {

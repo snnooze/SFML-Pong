@@ -1,11 +1,10 @@
 #include "Game.hpp"
 #include <iostream>
 
-Game::Game(sf::RenderWindow &par, sf::Texture textures[6], const sf::Font &font, bool is_2PlayersMode) {
+Game::Game(sf::RenderWindow &par, sf::Texture &textures, const sf::Font &font, bool is_2PlayersMode) {
     //Get the parent Window
-    this->m_parent = &par;
-
-    //this->setCenter({this->m_parent->getSize().x / 2.f, this->m_parent->getSize().y / 2.f});
+    m_parent = &par;
+    m_textures = textures;
 
     //Loading the font for writing text on the view
     if(!this->m_font.openFromFile("Assets/Fonts/kenvector_future_thin.ttf"))
@@ -13,33 +12,26 @@ Game::Game(sf::RenderWindow &par, sf::Texture textures[6], const sf::Font &font,
         std::cout<<"Font could not be opened"<<std::endl;
     }
 
-    //Get the textures loaded at the game launch
-    for(int i = 0; i<=4; i++)
-    {
-        this->m_textures[i] = &textures[i];
-    }
-
     this->m_parentWidth = this->m_parent->getSize().x;
     this->m_parentHeight = this->m_parent->getSize().y;
 
+}
 
-    if (this->m_is2PlayersMode) {
-        this->m_paddleLeft = Paddle(par, *this->m_textures, true);
+void Game::setGame() {
+
+    if (m_is2PlayersMode) {
+        m_paddleLeft = Paddle(*m_parent, m_textures, true);
     }
     else {
-        this->m_paddleLeft = Paddle(par, *this->m_textures, true);
+        m_paddleLeft = Paddle(*m_parent, m_textures, true);
     }
 
-    this->m_paddleRight = Paddle(par, *this->m_textures, false);
-    this->m_ball = Ball(par, this->m_textures);
+    m_paddleRight = Paddle(*m_parent, m_textures, false);
+    m_ball = Ball(*m_parent, m_textures);
 
-    this->m_paddleRight.setOrigin(this->m_paddleRight.getLocalBounds().getCenter());
-    this->m_paddleRight.setPosition({this->m_parent->getSize().x - 50.f, this->m_parent->getSize().y/2.f});
-
-    this->m_paddleLeft.setOrigin(this->m_paddleLeft.getLocalBounds().getCenter());
-    //this->m_paddleRight.setOrigin(this->m_paddleRight.getLocalBounds().getCenter());
-
-    this->m_ball.setOrigin(this->m_ball.getLocalBounds().getCenter());
+    m_paddleLeft.setOrigin(m_paddleLeft.getLocalBounds().getCenter());
+    m_paddleRight.setOrigin(m_paddleRight.getLocalBounds().getCenter());
+    m_ball.setOrigin(this->m_ball.getLocalBounds().getCenter());
 
     this->m_scorePlayer1Lbl = sf::Text(this->m_font, "0", 45);
     this->m_scorePlayer2Lbl = sf::Text(this->m_font, "0", 45);
@@ -52,15 +44,17 @@ Game::Game(sf::RenderWindow &par, sf::Texture textures[6], const sf::Font &font,
 
     this->m_scorePlayer1Lbl.setOutlineColor(sf::Color::Black);
     this->m_scorePlayer2Lbl.setOutlineColor(sf::Color::Black);
+
+    reset();
 }
 
 void Game::start()
 {
 
     if (!this->m_isActive) {
-        this->reset();
-        this->m_isActive = true;
-        this->m_ball.startMove(this->m_isFirstPlayerTurn);
+        reset();
+        m_isActive = true;
+        m_ball.startMove(m_isFirstPlayerTurn);
     }
 
 }
@@ -107,29 +101,26 @@ void Game::update(float dtTime)
             this->reset();
         }
 
-        this->m_ball.update(dtTime);
+        m_ball.update(dtTime);
 
         if (this->m_is2PlayersMode) {
 
 
             this->m_paddleLeft.move(this->movePlayer2, dtTime);
 
-            //sf::Vector2 pdl = {this->m_paddleLeft.getPosition().x, this->m_paddleLeft.getPosition().y + (250 * dtTime )* this->movePlayer2 };
-            //this->m_paddleLeft.setPosition(pdl);
-
         }
         else {
 
-            if (this->m_ball.getGlobalBounds().getCenter().y != this->m_paddleLeft.getPosition().y) {
-                if (this->m_ball.getGlobalBounds().getCenter().y < this->m_paddleLeft.getPosition().y) {
-                    this->movePlayer2 = -1;
+            if (m_ball.getGlobalBounds().getCenter().y != m_paddleLeft.getPosition().y) {
+                if (m_ball.getGlobalBounds().getCenter().y < m_paddleLeft.getPosition().y) {
+                    movePlayer2 = -1;
                 }
                 else {
-                    this->movePlayer2 = +1;
+                    movePlayer2 = +1;
                 }
 
 
-                this->m_paddleLeft.move(this->movePlayer2, dtTime);
+                m_paddleLeft.move(movePlayer2, dtTime);
 
             }
 
@@ -138,8 +129,8 @@ void Game::update(float dtTime)
         // this->m_paddleRight.setPosition(pdr);
 
         this->m_paddleRight.move(this->movePlayer1, dtTime);
-
-
+        //
+        //
         this->m_paddleLeft.update(dtTime);
         this->m_paddleRight.update(dtTime);
 
@@ -161,20 +152,18 @@ void Game::update(float dtTime)
 
 void Game::draw() {
     //Load the background image and set the positions
-    sf::Sprite background( *this->m_textures[2]);
-    background.setOrigin(background.getLocalBounds().position);
-    background.setPosition({0,0});
+    sf::Sprite background(m_textures, sf::IntRect({0,0},{1287, 726}));
+    background.setOrigin(background.getLocalBounds().getCenter());
+    background.setPosition({m_parent->getSize().x/2.f,m_parent->getSize().y/2.f});
     //Draw the background of the view
     this->m_parent->draw(background);
 
-    this->m_parent->draw(this->m_paddleLeft);
+    m_parent->draw(m_paddleLeft);
+    m_parent->draw(m_paddleRight);
+    m_parent->draw(m_ball);
 
-
-    this->m_parent->draw(this->m_paddleRight);
-    this->m_parent->draw(this->m_ball);
-
-    this->m_parent->draw(this->m_scorePlayer1Lbl);
-    this->m_parent->draw(this->m_scorePlayer2Lbl);
+    m_parent->draw(this->m_scorePlayer1Lbl);
+    m_parent->draw(this->m_scorePlayer2Lbl);
 }
 
 void Game::movePlayer1Up()
@@ -200,34 +189,54 @@ void Game::stopPlayer1() {
 }
 
 void Game::reset() {
-    this->m_isActive = false;
-    this->m_paddleRight.setPosition({this->m_parent->getSize().x - 50.f, this->m_parent->getSize().y/2.f});
-    this->m_ball.setPosition({(float)this->m_parent->getSize().x/2,(float)this->m_parent->getSize().y/2});
-    this->m_paddleLeft.setPosition({50.f, (float)this->m_parent->getSize().y/2.f});
-    this->movePlayer1 = 0;
-    this->movePlayer2 = 0;
-    this->stopPlayer1();
-    this->stopPlayer2();
+    m_isActive = false;
+    m_paddleRight.setPosition({m_parent->getSize().x - 50.f - m_paddleRight.getLocalBounds().size.x, m_parent->getSize().y/2.f});
+    m_ball.setPosition({(float)m_parent->getSize().x/2,(float)m_parent->getSize().y/2});
+    m_paddleLeft.setPosition({m_paddleLeft.getLocalBounds().size.x +  50.f, (float)m_parent->getSize().y/2.f});
+    movePlayer1 = 0;
+    movePlayer2 = 0;
+    stopPlayer1();
+    stopPlayer2();
 
-    this->checkVictoryConditions();
+    checkVictoryConditions();
 
 }
 
 void Game::checkVictoryConditions() {
 
-    if ((this->m_scorePlayer1 > 11 || this->m_scorePlayer2 > 11) && this->m_gameMode == 1) {
+    if ((this->m_scorePlayer1 > 11 || this->m_scorePlayer2 > 11) && m_gameMode == 1) {
 
-        this->m_isActive = true;
+        m_isActive = true;
+        m_gameEnded = true;
 
         //Ecran de fin et de victoire défaite
+        if (this->m_is2PlayersMode) {
+            //Affiche le player victorieux
+            if (this->m_scorePlayer1 > 11) {
+                //Affiche Player 1 Wins
+            }
+            else {
+                //Affiche Player 2 wins
+            }
+        }
+        else {
+            if (this->m_scorePlayer1 > 11) {
+                //Affiche You win
+            }
+            else {
+                //Affiche You lose
+            }
+        }
 
     }
 
     if ((this->m_scorePlayer1 < this->m_scorePlayer2) && this->m_gameMode == 2) {
 
         this->m_isActive = true;
+        this->m_gameEnded = true;
 
         //Le joueur 1 Perd en mode endurance, Affichage Game over et stockage du score si necessaire
+
 
     }
 
@@ -257,12 +266,12 @@ void Game::stopPlayer2() {
 
 void Game::setVolume(float volume) {
 
-    this->m_ball.setVolume(volume);
+    m_ball.setVolume(volume);
 
 }
 
 void Game::setStartingVolume(float volume) {
-    this->m_ball.setVolume(volume);
+    m_ball.setVolume(volume);
 }
 
 void Game::resetScore() {

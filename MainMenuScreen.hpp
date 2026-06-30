@@ -8,11 +8,11 @@ class MainMenuScreen
         sf::Font m_font;
         sf::Text m_stateText = sf::Text(m_font, "");
         sf::RenderWindow *m_parent;
-        sf::Texture *m_textures[6];
-        //sf::Sprite m_background = sf::Sprite(*this->m_textures[2]);
+        sf::Texture m_textures;
+        sf::Sprite m_background = sf::Sprite(m_textures);
         float m_parentWidth;
         float m_parentHeight;
-        Button m_1PlayerBtn =  Button(this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
+        Button m_1PlayerBtn = Button(m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
         sf::Text m_labelTxt = sf::Text(m_font, "");
 
         Button m_2PlayersBtn =  Button(this->m_textures, sf::IntRect(sf::Vector2i(0,0), sf::Vector2(150, 64)));
@@ -29,11 +29,10 @@ class MainMenuScreen
         int m_previousPosition = 1;
 
     public : 
-        MainMenuScreen(sf::RenderWindow &par, sf::Texture textures[6], const sf::Font &font);
+        MainMenuScreen(sf::RenderWindow &par, sf::Texture &textures);
         int m_menuPosition = 1;
-        void inputs();
+        void showMenu();
         void update(float dt = 0.f);
-        sf::Sprite getSprite();
         void setVolumeBtn(float volume);
         void draw();
         ~MainMenuScreen();

@@ -1,20 +1,16 @@
 #include "SettingsScreen.hpp"
 
-SettingsScreen::SettingsScreen(sf::RenderWindow &par, sf::Texture textures[6], sf::Font &font)
+SettingsScreen::SettingsScreen(sf::RenderWindow &par, sf::Texture &textures, sf::Font &font)
 {
     //Get the parent Window
     this->m_parent = &par;
+
+    this->m_textures = &textures;
 
     //Loading the font for writing text on the view
     if(!this->m_Font.openFromFile("Assets/Fonts/kenvector_future_thin.ttf"))
     {
         std::cout<<"Font could not be opened"<<std::endl;
-    }
-
-    //Get the textures loaded at the game launch
-    for(int i = 0; i<=5; i++)
-    {
-        this->m_textures[i] = &textures[i];
     }
 
 
@@ -50,11 +46,11 @@ SettingsScreen::SettingsScreen(sf::RenderWindow &par, sf::Texture textures[6], s
         hauteur = this->m_textGameMode.getGlobalBounds().getCenter().y;
         this->m_textGameMode.setOrigin({longueur,hauteur});
 
-        this->m_buttonMoinsMusique.setTexture(*this->m_textures[5]);
-        this->m_buttonPlusMusique.setTexture(*this->m_textures[5]);
+        this->m_buttonMoinsMusique.setTexture(*this->m_textures);
+        this->m_buttonPlusMusique.setTexture(*this->m_textures);
 
-        this->m_buttonMoinsSFX.setTexture(*this->m_textures[5]);
-        this->m_buttonPlusSFX.setTexture(*this->m_textures[5]);
+        this->m_buttonMoinsSFX.setTexture(*this->m_textures);
+        this->m_buttonPlusSFX.setTexture(*this->m_textures);
 
         this->m_textPlus1.setFont(this->m_Font);
         this->m_textPlus1.setCharacterSize(35);
@@ -96,10 +92,10 @@ SettingsScreen::SettingsScreen(sf::RenderWindow &par, sf::Texture textures[6], s
         hauteur = this->m_textGameModeSelected.getGlobalBounds().getCenter().y;
         this->m_textGameModeSelected.setOrigin({longueur,hauteur});
 
-        this->m_buttonGameMode.setTexture(*this->m_textures[1]);
+        this->m_buttonGameMode.setTexture(*this->m_textures);
         this->m_buttonGameMode.setOrigin(this->m_buttonGameMode.getLocalBounds().getCenter());
 
-        this->m_buttonSave.setTexture(*this->m_textures[1]);
+        this->m_buttonSave.setTexture(*this->m_textures);
         this->m_buttonSave.setOrigin(this->m_buttonSave.getLocalBounds().getCenter());
 
         this->m_textSave.setFont(this->m_Font);
@@ -255,7 +251,7 @@ void SettingsScreen::draw() {
 
     sf::IntRect rectangle = sf::IntRect( {0,0},{1287, 726} );
 
-    sf::Sprite background = sf::Sprite(*this->m_textures[2], rectangle);
+    sf::Sprite background = sf::Sprite(*this->m_textures, rectangle);
 
     this->m_parent->draw(background);
 

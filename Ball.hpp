@@ -16,12 +16,12 @@ private :
     int m_pos_y = 0;
     bool m_isActive = false;
     float m_speed = 500;
-    sf::Texture *m_textures[5];
+    sf::Texture *m_textures;
     sf::Vector2f m_ballDirection = {0,0};
     sf::Sound m_rebond = sf::Sound(Globals::g_buffer);
     sf::Sound m_out = sf::Sound(Globals::g_bufferOut);
 public :
-    Ball(sf::RenderWindow &par, sf::Texture *textures[5]);
+    Ball(sf::RenderWindow &par, sf::Texture &textures);
     void inputs();
     void update(float dtTime);
     void draw();

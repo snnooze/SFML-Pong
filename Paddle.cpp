@@ -1,31 +1,27 @@
 #include "Paddle.hpp"
 
-Paddle::Paddle(sf::RenderWindow &par, sf::Texture textures[6], bool isLeftPaddle) : Sprite(textures[4])
+Paddle::Paddle(sf::RenderWindow &par, sf::Texture &textures, bool isLeftPaddle) : Sprite(textures)
 {
-    this->m_parent = &par;
+    m_parent = &par;
 
-    //Get the textures loaded at the game launch
-    for(int i = 0; i<=5; i++)
-    {
-        this->m_textures[i] = &textures[i];
-    }
+    m_textures = &textures;
 
-    this->setTexture(textures[4]);
+    setTexture(textures);
 
-    this->m_isLeftPaddle = isLeftPaddle;
+    m_isLeftPaddle = isLeftPaddle;
 
-    if (isLeftPaddle) {
+    if (m_isLeftPaddle) {
 
         this->setRotation(sf::degrees(180));
-        //this->setOrigin({this->getLocalBounds().getCenter().x, this->getLocalBounds().getCenter().y});
+        setOrigin({this->getLocalBounds().getCenter().x, this->getLocalBounds().getCenter().y});
 
     }
     else
     {
-        //this->setOrigin({this->getLocalBounds().getCenter().x, this->getLocalBounds().getCenter().y});
+        setOrigin({this->getLocalBounds().getCenter().x, this->getLocalBounds().getCenter().y});
 
     }
-    sf::IntRect rect = {{0, 0},{40,99},};
+    sf::IntRect rect = {{1999, 0},{40,99},};
     this->setTextureRect(rect);
 }
 
@@ -54,4 +50,4 @@ void Paddle::move(int direction, float dtTime) {
 
 }
 
-Paddle::~Paddle() =default;
+Paddle::~Paddle() = default;
