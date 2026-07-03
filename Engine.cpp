@@ -219,6 +219,7 @@ void Engine::inputs()
                 if(!this->m_musciPlay)
                 {
                     this->m_mainMenuMusic.play();
+                    m_mainMenuMusic.setLooping(true);
                     this->m_musciPlay = true;
                 }
 
@@ -328,6 +329,7 @@ void Engine::inputs()
                 if(!this->m_musciPlay)
                 {
                     this->m_mainMenuMusic.play();
+                    m_mainMenuMusic.setLooping(true);
                     this->m_musciPlay = true;
                 }
 

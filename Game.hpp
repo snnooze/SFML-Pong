@@ -11,7 +11,7 @@ private :
     int m_parentWidth = 0;
     int m_parentHeight = 0;
     int m_mode2Players = false;
-    int m_endScore = 1;
+    int m_endScore = 10;
     Paddle m_paddleLeft = Paddle(*m_parent, m_textures, true);
     Paddle m_paddleRight = Paddle(*m_parent, this->m_textures, false);
     Ball m_ball = Ball(*this->m_parent, this->m_textures);

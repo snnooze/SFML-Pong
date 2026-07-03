@@ -15,8 +15,8 @@ Actually the game is a WIP and there is the plan :
 
 - [x] A game for 1 player
 - [x] A 2 players mode on the same screen
-- [ ] 2 playing types possibles 
-- [ ] A complete settings system
+- [ ] 2 playing modes 
+- [x] A complete settings system
 - [ ] High Scores for an "Endurance mode"
 
 Maybe
