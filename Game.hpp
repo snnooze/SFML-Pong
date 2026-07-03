@@ -11,6 +11,7 @@ private :
     int m_parentWidth = 0;
     int m_parentHeight = 0;
     int m_mode2Players = false;
+    int m_endScore = 1;
     Paddle m_paddleLeft = Paddle(*m_parent, m_textures, true);
     Paddle m_paddleRight = Paddle(*m_parent, this->m_textures, false);
     Ball m_ball = Ball(*this->m_parent, this->m_textures);
@@ -28,12 +29,24 @@ private :
     bool m_isFirstPlayerTurn = true;
     int m_gameMode = 1;
     bool m_gameEnded = false;
+    sf::Sprite m_background = sf::Sprite(m_textures);
+    sf::RectangleShape m_flash;
+    bool m_isFlashing = false;
+    bool m_Player1Victory = false;
+    bool m_Player2Victory = false;
+    bool m_YouWin = false;
+    bool m_YouLose = false;
+    sf::Sprite m_Player1Wins = sf::Sprite(m_textures);
+    sf::Sprite m_Player2Wins = sf::Sprite(m_textures);
+    sf::Sprite m_PlayerWin = sf::Sprite(m_textures);
+    sf::Sprite m_PlayerLose = sf::Sprite(m_textures);
 public :
     Game(sf::RenderWindow &par, sf::Texture &textures, const sf::Font &font, bool is2PlayersMode);
     void setGame();
     void start();
     void reset();
     void checkVictoryConditions();
+    void backgroundVibration();
     void over();
     void inputs();
     void update(float dtt);
