@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <fstream>
+#include <string>
 #include "Paddle.hpp"
 #include "Ball.hpp"
 
@@ -11,7 +13,7 @@ private :
     int m_parentWidth = 0;
     int m_parentHeight = 0;
     int m_mode2Players = false;
-    int m_endScore = 10;
+    int m_endScore = 2; //Nombre de points dans une partie
     Paddle m_paddleLeft = Paddle(*m_parent, m_textures, true);
     Paddle m_paddleRight = Paddle(*m_parent, this->m_textures, false);
     Ball m_ball = Ball(*this->m_parent, this->m_textures);
@@ -36,10 +38,13 @@ private :
     bool m_Player2Victory = false;
     bool m_YouWin = false;
     bool m_YouLose = false;
+    bool m_isSaveNeeded = true;
     sf::Sprite m_Player1Wins = sf::Sprite(m_textures);
     sf::Sprite m_Player2Wins = sf::Sprite(m_textures);
     sf::Sprite m_PlayerWin = sf::Sprite(m_textures);
     sf::Sprite m_PlayerLose = sf::Sprite(m_textures);
+    sf::Text m_EnduranceModeResult = sf::Text(this->m_font, "", 45);
+
 public :
     Game(sf::RenderWindow &par, sf::Texture &textures, const sf::Font &font, bool is2PlayersMode);
     void setGame();

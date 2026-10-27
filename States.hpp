@@ -14,10 +14,12 @@ class States
             bool m_isMainMenu = true;
             bool m_isInGame  = false;
             bool m_isConfigMenu = false;
+            bool m_isHighScoreMenu = false;
         }currentGameState;
         void pause();
         void mainMenu();
         void game();
         void configMenu();
         void gameOver();
+        void highScores();
 };

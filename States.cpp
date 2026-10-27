@@ -14,6 +14,7 @@ void States::pause()
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = false;
         this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
 
     }
     else
@@ -23,6 +24,7 @@ void States::pause()
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = false;
         this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
     }
 }
 
@@ -35,6 +37,7 @@ void States::mainMenu()
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = false;
         this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
     }
     else
     {
@@ -43,6 +46,7 @@ void States::mainMenu()
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = true;
         this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
     }
 }
 
@@ -55,6 +59,7 @@ void States::game()
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = false;
         this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
     }
     else
     {
@@ -63,6 +68,7 @@ void States::game()
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = false;
         this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
     }
 }
 
@@ -75,6 +81,7 @@ void States::configMenu() {
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = true;
         this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
     }
     else
     {
@@ -83,6 +90,7 @@ void States::configMenu() {
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = false;
         this->currentGameState.m_isConfigMenu = true;
+        this->currentGameState.m_isHighScoreMenu = false;
     }
 
 }
@@ -96,6 +104,7 @@ void States::gameOver()
         this->currentGameState.m_isGameOver = false;
         this->currentGameState.m_isMainMenu = false;
         this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
     }
     else
     {
@@ -104,5 +113,28 @@ void States::gameOver()
         this->currentGameState.m_isGameOver = true;
         this->currentGameState.m_isMainMenu = false;
         this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
+    }
+}
+
+void States::highScores()
+{
+    if(this->currentGameState.m_isHighScoreMenu)
+    {
+        this->currentGameState.m_isPaused = false;
+        this->currentGameState.m_isInGame = false;
+        this->currentGameState.m_isGameOver = false;
+        this->currentGameState.m_isMainMenu = false;
+        this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = false;
+    }
+    else
+    {
+        this->currentGameState.m_isPaused = false;
+        this->currentGameState.m_isInGame = false;
+        this->currentGameState.m_isGameOver = false;
+        this->currentGameState.m_isMainMenu = false;
+        this->currentGameState.m_isConfigMenu = false;
+        this->currentGameState.m_isHighScoreMenu = true;
     }
 }

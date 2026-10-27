@@ -4,7 +4,7 @@ Engine::Engine() {
     if (this->m_Font.openFromFile("Assets/Fonts/kenvector_future_thin.ttf")) {
         if (this->texturesLoader()) {
             if (this->m_mainMenuMusic.openFromFile("Assets/Sounds/music.mp3")) {
-                this->loadConfig();
+
 
                 this->createWindow(this->m_windowWidth, this->m_windowHeight, this->m_GameName);
 
@@ -15,11 +15,15 @@ Engine::Engine() {
 
                 this->m_window.setKeyRepeatEnabled(false);
 
+
+
                 m_viewMMS = MainMenuScreen(m_window, m_textures);
                 m_viewMMS.showMenu();
 
                 m_game = Game(m_window, m_textures, m_Font, false);
                 m_game.setGame();
+
+                this->loadConfig();
 
             } else {
                 std::cout << "Music loading Failed";
@@ -44,6 +48,8 @@ void Engine::loadConfig() {
         for (int i = 0; i < 3; i++) {
             fgets(conf[i], sizeof(line), fichier);
         }
+
+        fclose(fichier);
 
     }
     else {
@@ -324,6 +330,13 @@ void Engine::inputs()
                      }
                 }
             }
+            if (m_GameState.currentGameState.m_isHighScoreMenu && event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Escape) {
+                    std::cout<<"sortir... \n";
+                    m_GameState.currentGameState.m_isHighScoreMenu = false;
+                    m_GameState.currentGameState.m_isMainMenu = true;
+                    this->m_highScores.closeScores();
+
+            }
             if(m_GameState.currentGameState.m_isMainMenu)
             {
                 if(!this->m_musciPlay)
@@ -357,12 +370,19 @@ void Engine::inputs()
                         std::cout<< "Main menu -> 1 \n";
                     }
                 }
+                if(m_GameState.currentGameState.m_isHighScoreMenu) {
+                    if(!this->m_musciPlay) {
+                        this->m_mainMenuMusic.play();
+                        m_mainMenuMusic.setLooping(true);
+                        this->m_musciPlay = true;
+                    }
+                }
                 //Appuis sur Enter
                 if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->code == sf::Keyboard::Key::Enter) {
                     switch (this->m_viewMMS.m_menuPosition)
                     {
                         case 1 :
-                            //Lance une partie SSSSSà 1 joueur
+                            //Lance une partie à 1 joueur
                             this->m_game.set1PlayersMode();
                             this->m_game.resetScore();
                             this->m_GameState.game();
@@ -373,14 +393,13 @@ void Engine::inputs()
                             this->m_game.resetScore();
                             this->m_GameState.game();
                             break;
-                            break;
                         case 3 :
                             //Affiche les settings
                             // this->m_GameState.currentGameState.m_isConfigMenu = true;
                             this->m_GameState.configMenu();
                             break;
                         case 4 :
-                            //Affiche les High scores
+                            this->m_GameState.highScores();
                             break;
                         case 5 :
                             m_window.close();
@@ -440,6 +459,12 @@ void Engine::update()
         //this->m_MMS.update(deltaTime);
         //Met en pause le jeu et affiche le menu principal
     }
+    if(m_GameState.currentGameState.m_isHighScoreMenu)
+    {
+        this->m_highScores.update(deltaTime);
+        //this->m_MMS.update(deltaTime);
+        //Met en pause le jeu et affiche le menu principal
+    }
 
 
 }
@@ -478,6 +503,12 @@ void Engine::draw()
     {
         //Met en pause le jeu et affiche le menu principal
         this->m_viewMMS.draw();
+    }
+
+    if(m_GameState.currentGameState.m_isHighScoreMenu)
+    {
+        //Met en pause le jeu et affiche le menu principal
+        this->m_highScores.draw();
     }
 
     this->m_window.display();

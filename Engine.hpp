@@ -6,6 +6,7 @@
 #include "PauseScreen.hpp"
 #include "MainMenuScreen.hpp"
 #include "SettingsScreen.hpp"
+#include "HighScores.hpp"
 #include "Game.hpp"
 
 using namespace sf;
@@ -27,6 +28,7 @@ class Engine
         //PauseScreen m_PS = PauseScreen(this->m_window);
         MainMenuScreen m_viewMMS = MainMenuScreen(m_window, m_textures);
         SettingsScreen m_configMenuScreen = SettingsScreen(this->m_window, this->m_textures, this->m_Font);
+        HighScores m_highScores = HighScores(this->m_window, this->m_textures, this->m_Font);
         Game m_game = Game(this->m_window, this->m_textures, this->m_Font, false);
         Music m_mainMenuMusic;
         bool m_musciPlay = false;

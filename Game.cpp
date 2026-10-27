@@ -1,4 +1,6 @@
 #include "Game.hpp"
+
+#include <algorithm>
 #include <iostream>
 
 Game::Game(sf::RenderWindow &par, sf::Texture &textures, const sf::Font &font, bool is_2PlayersMode) {
@@ -40,6 +42,8 @@ void Game::setGame() {
     this->m_scorePlayer1Lbl = sf::Text(this->m_font, "0", 45);
     this->m_scorePlayer2Lbl = sf::Text(this->m_font, "0", 45);
 
+    m_EnduranceModeResult = sf::Text(m_font, "", 45);
+
     this->m_scorePlayer1Lbl.setFillColor(sf::Color::Transparent);
     this->m_scorePlayer2Lbl.setFillColor(sf::Color::Transparent);
 
@@ -76,6 +80,7 @@ void Game::start()
     if (!this->m_isActive) {
         reset();
         m_isActive = true;
+        m_isSaveNeeded = true;
         m_ball.startMove(m_isFirstPlayerTurn);
     }
 
@@ -189,7 +194,7 @@ void Game::draw() {
     //Load the background image and set the positions
 
     //Draw the background of the view
-    this->m_parent->draw(m_background);
+    m_parent->draw(m_background);
 
     m_parent->draw(m_paddleLeft);
     m_parent->draw(m_paddleRight);
@@ -227,8 +232,14 @@ void Game::draw() {
 
     }
 
-    m_parent->draw(this->m_scorePlayer1Lbl);
-    m_parent->draw(this->m_scorePlayer2Lbl);
+    if (m_YouWin && m_gameMode == 2) {
+        m_EnduranceModeResult.setOrigin(m_EnduranceModeResult.getLocalBounds().getCenter());
+        m_EnduranceModeResult.setPosition(m_PlayerWin.getGlobalBounds().getCenter());
+        m_parent->draw(m_EnduranceModeResult);
+    }
+
+    m_parent->draw(m_scorePlayer1Lbl);
+    m_parent->draw(m_scorePlayer2Lbl);
 }
 
 void Game::movePlayer1Up()
@@ -269,19 +280,22 @@ void Game::reset() {
 
 void Game::checkVictoryConditions() {
 
-    if ((this->m_scorePlayer1 > m_endScore || this->m_scorePlayer2 > m_endScore) && m_gameMode == 1) {
+    //std::cout<<"Game Mode"<< m_gameMode <<"\n";
+    //Si mode normal  et l'un des joueurs atteints le score max de la partie
+    if ((m_scorePlayer1 >= m_endScore || m_scorePlayer2 >= m_endScore) && m_gameMode == 1) {
 
         m_isActive = false;;
         m_gameEnded = true;
 
-        //Ecran de fin et de victoire défaite
-        if (this->m_is2PlayersMode) {
+        //Ecran de fin et de victoire ou défaite
+
+        //En mode deux joueurs
+        if (m_is2PlayersMode) {
             //Affiche le player victorieux
-            if (this->m_scorePlayer1 > m_endScore) {
+            if (m_scorePlayer1 > m_endScore) {
                 //Affiche Player 1 Wins
 
                 m_Player1Victory = true;
-
 
             }
             else {
@@ -290,8 +304,8 @@ void Game::checkVictoryConditions() {
 
             }
         }
-        else {
-            if (this->m_scorePlayer1 > m_endScore) {
+        else {//Mode 1 joueur affiche vistoire ou défaite
+            if (m_scorePlayer1 > m_endScore) {
                 //Affiche You win
                 m_YouWin = true;
             }
@@ -301,15 +315,164 @@ void Game::checkVictoryConditions() {
             }
         }
 
-    }
+    }//En mode endurance à 1 joueur
+    else if(m_scorePlayer1 < m_scorePlayer2 && m_gameMode > 1 && !m_mode2Players) {
 
-    if ((this->m_scorePlayer1 < this->m_scorePlayer2) && this->m_gameMode == 2) {
+        //std::cout<<"Game ended ... \n";
 
-        this->m_isActive = true;
-        this->m_gameEnded = true;
+        m_isActive = false;
+        m_gameEnded = true;
 
         //Le joueur 1 Perd en mode endurance, Affichage Game over et stockage du score si necessaire
+        if (!m_isSaveNeeded) {
 
+        }
+            else {
+                int scoresOrdered[11];
+                std::string scores[10];
+                //int scores[10];
+
+                std::ifstream fichier("Assets/Resources/scores.txt");
+                //Récupère les scores
+                if (fichier.is_open()) {
+                    for (int i = 0; i<10; i++) {
+                        std::getline(fichier, scores[i]);
+
+                        std::cout << "Récupéré : " << scores[i] << std::endl;
+
+                    }
+                }
+
+                for (int i = 0; i<10; i++) {
+                    //     //scoresOrdered = atoi(scores[i].c_str());
+                    //scoresOrdered[i] = std::stol(scores[i]);
+
+                    std::string s = scores[i];
+
+                    if (!s.empty()) {
+
+                        scoresOrdered[i] = std::stoi(s);
+
+                        std::cout << "stocké : "<< scoresOrdered[i] << std::endl;
+
+                    }
+                    else {
+                        scoresOrdered[i] = 0;
+
+                        std::cout << "stocké (vide) : "<< scoresOrdered[i] << std::endl;
+
+                    }
+
+                }
+
+                scoresOrdered[11] = m_scorePlayer1;
+
+                std::stable_sort(scoresOrdered, scoresOrdered+11);
+
+                fichier.close();
+
+                std::ofstream fichierEcriture("Assets/Resources/scores.txt");
+
+                std::string sauvegarde = "";
+
+                if (fichierEcriture.is_open()) {
+                    for (int i = 11; i>0; i--) {
+                        //fichierEcriture<<scoresOrdered[i]<<std::endl;
+
+                        sauvegarde += std::to_string(scoresOrdered[i]) + "\n";
+
+                        std::cout<< "Ecriture : " <<scoresOrdered[i]<<std::endl;
+
+                    }
+                }
+
+                fichierEcriture.write(sauvegarde.c_str(), sauvegarde.length());
+
+                fichierEcriture.close();
+
+                m_isSaveNeeded = false;
+            }
+
+
+
+
+        // for (int i = 0; i <= 9; i++) {
+        //     conf[i] = '0';
+        // }
+        //
+        // if (fichier = std::fopen("Assets/Resources/scores.txt", "r")) {
+        //
+        //     for (int i = 0; i < 10; i++) {
+        //         fgets(&conf[i], 1024, fichier);
+        //     }
+        //
+        //     fclose(fichier);
+        //
+        // }
+        // else
+        // {
+        //     std::cout << "Failed to read scores files...";
+        // }
+        //
+        // for (int i = 0; i < 10; i++) {
+        //
+        //     scores[i] = (int)conf[i];
+        // }
+        //
+        // long size = sizeof(scores) / sizeof(scores[0]);
+        // std::sort(scores, scores + size, std::greater<long>());
+        //
+        // bool highScored = false;
+        //
+        // for (int i = 0; i < 10; i++) {
+        //     if (m_scorePlayer1 > scores[i]) {
+        //         highScored = true;
+        //     }
+        // }
+        //
+        //
+        //     if (highScored) {
+        //         m_YouWin = true;
+        //         m_EnduranceModeResult.setString("New High Score !!");
+        //
+        //         std::sort(scores, scores + size, std::greater<long>());
+        //
+        //         // scores[9] = m_scorePlayer1;
+        //         bool scoreadded = false;
+        //
+        //         if (fichier = std::fopen("Assets/Resources/scores.txt", "w")) {
+        //             std::string scoresString;
+        //
+        //             for (int i = 0; i < 10; i++) {
+        //                 if (scores[i] > m_scorePlayer1) {
+        //                     scoresString += std::to_string(scores[i]) + "\n";
+        //                 }
+        //                 else {
+        //                     if (!scoreadded) {
+        //                         scoresString += std::to_string(m_scorePlayer1) + "\n" + std::to_string(scores[i]) + "\n";
+        //                         scoreadded = true;
+        //                     }
+        //                     else {
+        //                         //scoresString += std::to_string(0) + "\n";
+        //                     }
+        //
+        //                 }
+        //             }
+        //
+        //             std::string sortie = scoresString;
+        //
+        //
+        //             if (!std::fprintf(fichier, sortie.c_str())) {
+        //                 std::cout << "Failed to write scores file...";
+        //             }
+        //         }
+
+                //fclose(fichier);
+
+            // }
+            // else{
+            // m_YouLose = true;
+            // }
 
     }
 
@@ -356,15 +519,18 @@ void Game::setStartingVolume(float volume) {
 }
 
 void Game::resetScore() {
-    this->m_scorePlayer1 = 0;
-    this->m_scorePlayer2 = 0;
+    m_scorePlayer1 = 0;
+    m_scorePlayer2 = 0;
 
-    this->m_scorePlayer1Lbl.setString(std::to_string(this->m_scorePlayer1));
-    this->m_scorePlayer2Lbl.setString(std::to_string(this->m_scorePlayer2));
+    m_scorePlayer1Lbl.setString(std::to_string(m_scorePlayer1));
+    m_scorePlayer2Lbl.setString(std::to_string(m_scorePlayer2));
 }
 
 void Game::setGameMode(int mode) {
-    this->m_gameMode = mode;
+
+    std::cout << "set game mode to "<< mode << "\n";
+
+    m_gameMode = mode;
 }
 
 Game::~Game() = default;
