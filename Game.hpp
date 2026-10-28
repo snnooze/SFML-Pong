@@ -13,7 +13,7 @@ private :
     int m_parentWidth = 0;
     int m_parentHeight = 0;
     int m_mode2Players = false;
-    int m_endScore = 2; //Nombre de points dans une partie
+    int m_endScore = 11; //Nombre de points dans une partie
     Paddle m_paddleLeft = Paddle(*m_parent, m_textures, true);
     Paddle m_paddleRight = Paddle(*m_parent, this->m_textures, false);
     Ball m_ball = Ball(*this->m_parent, this->m_textures);
@@ -39,6 +39,7 @@ private :
     bool m_YouWin = false;
     bool m_YouLose = false;
     bool m_isSaveNeeded = true;
+    bool m_highscore = false;
     sf::Sprite m_Player1Wins = sf::Sprite(m_textures);
     sf::Sprite m_Player2Wins = sf::Sprite(m_textures);
     sf::Sprite m_PlayerWin = sf::Sprite(m_textures);

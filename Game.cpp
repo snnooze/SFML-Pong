@@ -81,6 +81,7 @@ void Game::start()
         reset();
         m_isActive = true;
         m_isSaveNeeded = true;
+        m_highscore = false;
         m_ball.startMove(m_isFirstPlayerTurn);
     }
 
@@ -90,6 +91,7 @@ void Game::start()
         m_YouWin = false;
         m_YouLose = false;
         m_gameEnded = false;
+        m_highscore = false;
         resetScore();
     }
 
@@ -224,7 +226,13 @@ void Game::draw() {
     if (m_YouWin || m_YouLose) {
 
         if (m_YouWin) {
-            m_parent->draw(m_PlayerWin);
+            if (m_scorePlayer1 == 0 && m_gameMode == 2) {
+                m_parent->draw(m_PlayerLose);
+            }
+            else {
+                m_parent->draw(m_PlayerWin);
+            }
+
         }
         else {
             m_parent->draw(m_PlayerLose);
@@ -233,6 +241,9 @@ void Game::draw() {
     }
 
     if (m_YouWin && m_gameMode == 2) {
+        if (m_highscore) {
+            m_EnduranceModeResult.setString("HighScore !! ");
+        }
         m_EnduranceModeResult.setOrigin(m_EnduranceModeResult.getLocalBounds().getCenter());
         m_EnduranceModeResult.setPosition(m_PlayerWin.getGlobalBounds().getCenter());
         m_parent->draw(m_EnduranceModeResult);
@@ -328,6 +339,7 @@ void Game::checkVictoryConditions() {
 
         }
             else {
+                m_YouWin = true;
                 int scoresOrdered[11];
                 std::string scores[10];
                 //int scores[10];
@@ -338,9 +350,12 @@ void Game::checkVictoryConditions() {
                     for (int i = 0; i<10; i++) {
                         std::getline(fichier, scores[i]);
 
-                        std::cout << "Récupéré : " << scores[i] << std::endl;
+                        //std::cout << "Récupéré : " << scores[i] << std::endl;
 
                     }
+                }
+                else {
+                    std::cout<<"Erreur lecture fichier."<< std::endl;
                 }
 
                 for (int i = 0; i<10; i++) {
@@ -353,21 +368,28 @@ void Game::checkVictoryConditions() {
 
                         scoresOrdered[i] = std::stoi(s);
 
-                        std::cout << "stocké : "<< scoresOrdered[i] << std::endl;
+                        //std::cout << "stocké : "<< scoresOrdered[i] << std::endl;
 
                     }
                     else {
                         scoresOrdered[i] = 0;
 
-                        std::cout << "stocké (vide) : "<< scoresOrdered[i] << std::endl;
+                        //std::cout << "stocké (vide) : "<< scoresOrdered[i] << std::endl;
 
                     }
 
                 }
 
-                scoresOrdered[11] = m_scorePlayer1;
+                scoresOrdered[10] = m_scorePlayer1;
 
-                std::stable_sort(scoresOrdered, scoresOrdered+11);
+                // Calculate the size of the array
+                int n = sizeof(scoresOrdered) / sizeof(scoresOrdered[0]);
+
+                // Sort the array using std::sort()
+                std::sort(scoresOrdered, scoresOrdered + n);
+
+                // std::sort(scoresOrdered, scoresOrdered+11);
+                // qsort(scoresOrdered, )(std::greater<int>());
 
                 fichier.close();
 
@@ -376,103 +398,31 @@ void Game::checkVictoryConditions() {
                 std::string sauvegarde = "";
 
                 if (fichierEcriture.is_open()) {
-                    for (int i = 11; i>0; i--) {
+                    for (int i = 10; i>0; i--) {
                         //fichierEcriture<<scoresOrdered[i]<<std::endl;
+
+                        if (m_scorePlayer1 > scoresOrdered[i]) {
+                            this->m_highscore = true;
+                        }
 
                         sauvegarde += std::to_string(scoresOrdered[i]) + "\n";
 
-                        std::cout<< "Ecriture : " <<scoresOrdered[i]<<std::endl;
+                        //std::cout<< "Ecriture : " <<scoresOrdered[i]<<std::endl;
 
                     }
+
+                    fichierEcriture.write(sauvegarde.c_str(), size(sauvegarde));
+                }
+                else {
+                    std::cout<<"File error"<<std::endl;
                 }
 
-                fichierEcriture.write(sauvegarde.c_str(), sauvegarde.length());
+
 
                 fichierEcriture.close();
 
                 m_isSaveNeeded = false;
             }
-
-
-
-
-        // for (int i = 0; i <= 9; i++) {
-        //     conf[i] = '0';
-        // }
-        //
-        // if (fichier = std::fopen("Assets/Resources/scores.txt", "r")) {
-        //
-        //     for (int i = 0; i < 10; i++) {
-        //         fgets(&conf[i], 1024, fichier);
-        //     }
-        //
-        //     fclose(fichier);
-        //
-        // }
-        // else
-        // {
-        //     std::cout << "Failed to read scores files...";
-        // }
-        //
-        // for (int i = 0; i < 10; i++) {
-        //
-        //     scores[i] = (int)conf[i];
-        // }
-        //
-        // long size = sizeof(scores) / sizeof(scores[0]);
-        // std::sort(scores, scores + size, std::greater<long>());
-        //
-        // bool highScored = false;
-        //
-        // for (int i = 0; i < 10; i++) {
-        //     if (m_scorePlayer1 > scores[i]) {
-        //         highScored = true;
-        //     }
-        // }
-        //
-        //
-        //     if (highScored) {
-        //         m_YouWin = true;
-        //         m_EnduranceModeResult.setString("New High Score !!");
-        //
-        //         std::sort(scores, scores + size, std::greater<long>());
-        //
-        //         // scores[9] = m_scorePlayer1;
-        //         bool scoreadded = false;
-        //
-        //         if (fichier = std::fopen("Assets/Resources/scores.txt", "w")) {
-        //             std::string scoresString;
-        //
-        //             for (int i = 0; i < 10; i++) {
-        //                 if (scores[i] > m_scorePlayer1) {
-        //                     scoresString += std::to_string(scores[i]) + "\n";
-        //                 }
-        //                 else {
-        //                     if (!scoreadded) {
-        //                         scoresString += std::to_string(m_scorePlayer1) + "\n" + std::to_string(scores[i]) + "\n";
-        //                         scoreadded = true;
-        //                     }
-        //                     else {
-        //                         //scoresString += std::to_string(0) + "\n";
-        //                     }
-        //
-        //                 }
-        //             }
-        //
-        //             std::string sortie = scoresString;
-        //
-        //
-        //             if (!std::fprintf(fichier, sortie.c_str())) {
-        //                 std::cout << "Failed to write scores file...";
-        //             }
-        //         }
-
-                //fclose(fichier);
-
-            // }
-            // else{
-            // m_YouLose = true;
-            // }
 
     }
 
