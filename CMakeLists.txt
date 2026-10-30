@@ -23,9 +23,9 @@ FetchContent_Declare(SFML
         SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-#List files of the game
+#List files of the game - WIN32 Hide the debug console for release
 
-add_executable(SFML_Pong main.cpp Engine.cpp Engine.hpp Button.cpp Button.hpp MainMenuScreen.cpp MainMenuScreen.hpp PauseScreen.cpp PauseScreen.hpp States.cpp States.hpp
+add_executable(SFML_Pong WIN32 main.cpp Engine.cpp Engine.hpp Button.cpp Button.hpp MainMenuScreen.cpp MainMenuScreen.hpp PauseScreen.cpp PauseScreen.hpp States.cpp States.hpp
         Game.cpp
         Game.hpp
         Paddle.cpp
